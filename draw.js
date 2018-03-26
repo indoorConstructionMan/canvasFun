@@ -10,7 +10,7 @@ const UNIT = 50;
 const POINT_OUTER = 8;
 const POINT_INNER = 4;
 const LINE_WIDTH = 5;
-const SCREEN_WIDTH = 1900;
+const SCREEN_WIDTH = 1200;
 const SCREEN_HEIGHT = 1100;
 const PADDING = 10;
 
@@ -114,28 +114,52 @@ var drawText = function(xpos, ypos, message) {
 
 // create elements for user to input values
 var createInputFields = function(count) {
+    // add header/title for form
+    var title = document.createElement('H');
+    var text = document.createTextNode("Please Input Measurements");
+    title.appendChild(text);
+    document.getElementById('inputs').appendChild(title);
+
+    //create height input
+    document.getElementById('inputs').appendChild(document.createElement('br'));
     var h = document.createElement("INPUT");
     h.setAttribute("type", "text");
-    h.setAttribute("value", "Height");
-    document.body.appendChild(h);
+    h.setAttribute("placeholder", "Height");
+    document.getElementById('inputs').appendChild(h);
 
+    // for each line/wall accept a single value
     for (var i = 0; i < count; i++) {
         var x = document.createElement("INPUT");
         x.setAttribute("type", "text");
-        x.setAttribute("value", symbol[i]);
-        document.body.appendChild(x);
+        x.setAttribute("placeholder", symbol[i]);
+        document.getElementById('inputs').appendChild(x);
     }
+
+
+    var formButton = document.createElement('BUTTON');
+    formButton.innerHTML = "Calculate materials";
+    formButton.setAttribute('id', 'formButton');
+    formButton.setAttribute('type', 'button');
+    formButton.setAttribute('class', 'w3-button w3-blue');
+    formButton.setAttribute('onclick', 'submitForm()');
+    document.getElementById('inputs').appendChild(formButton);
+    document.getElementById('inputs').appendChild(document.createElement('br'));
+
 };
 
 
-var submitButton = function() {
-    var h = document.createElement("BUTTON");
-    h.setAttribute("type", "button");
-    h.setAttribute("value", "Generate Board");
-    h.setAttribute("id", "genButton");
-    document.body.appendChild(h);
-};
+function submitForm() {
 
+    var vals = document.querySelectorAll('INPUT');
+    values = "Height: ";
+    for (var i = 0; i < vals.length; i++) {
+        values += vals[i].value + ", ";
+    }
+    values+="VAL";
+    var dimensions = values.replace(", VAL", "");
+    console.log(dimensions);
+
+}
 
 
 // setup all variables to calculate board
@@ -187,6 +211,7 @@ var setupVariables = () => {
 
 // initialize the grid in the background.
 var initialize = function() {
+
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
     var xDelta = UNIT;
@@ -210,7 +235,7 @@ var initialize = function() {
                  LINE_WIDTH
         );
         yDelta += UNIT;
-    } while(yDelta < 1080);
+    } while(yDelta < SCREEN_HEIGHT);
 };
 
 
