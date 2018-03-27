@@ -30,13 +30,13 @@ var draw = function(p1, p2) {
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
     if (points.length == 2){
-        drawDot(p2, "#d3d3d3", POINT_OUTER);
-        drawLine(p1, p2, "#000000", LINE_WIDTH);
-        drawDot(p2, "#000000", POINT_INNER);
+        drawDot(p2, BLUEPRINTBLUE, POINT_OUTER);
+        drawLine(p1, p2, BLACK, LINE_WIDTH);
+        drawDot(p2, BLACK, POINT_INNER);
         points.shift();
     } else {
-        drawDot(p1, "#d3d3d3", POINT_OUTER);
-        drawDot(p1, "#000000", POINT_INNER);
+        drawDot(p1, BLUEPRINTBLUE, POINT_OUTER);
+        drawDot(p1, BLACK, POINT_INNER);
     }
 };
 
@@ -48,4 +48,16 @@ var drawText = function(xpos, ypos, message) {
 
     context.font = "30px Arial";
     context.strokeText(message, xpos, ypos);
+};
+
+
+var drawSet = function() {
+    console.log(stored_points);
+    for (var i = 0; i < stored_points.length-1; i++) {
+        drawLine(stored_points[i], stored_points[i+1], WHITE, LINE_WIDTH);
+        drawDot(stored_points[i], WHITE, POINT_OUTER);
+        drawDot(stored_points[i+1], WHITE, POINT_OUTER);
+        drawDot(stored_points[i], BLACK, POINT_INNER);
+        drawDot(stored_points[i+1], BLACK, POINT_INNER);
+    }
 };

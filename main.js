@@ -1,5 +1,6 @@
 require('./constants.js');
 require('./drawCanvas.js');
+require('./log.js');
 
 // import functions from other local files.
 function require(path) {
@@ -14,15 +15,6 @@ window.onload = function() {
     console.log('Welcome to drywall calculator');
     start();
 }
-
-
-// Log function display route
-var log = function(){
-    console.log("Path Ended...");
-    stored_points.forEach(function(ele){
-        console.log("(x,y) => (" + ele.x + ",\t" + ele.y + ")");
-    });
-};
 
 
 // Did we double click? if we did then section is complete
@@ -71,6 +63,8 @@ var createInputFields = function(count) {
     document.getElementById('inputs').appendChild(formButton);
     document.getElementById('inputs').appendChild(document.createElement('br'));
 
+    drawSet();
+
 };
 
 
@@ -78,44 +72,44 @@ function submitForm() {
     // 4*8 4*9 4*10 4*12 4*14 4.5*12
     var boards = [0, 0, 0, 0, 0, 0];
     var multiplier = 1;
-
+    var only54 = false;
 
     var pointSet = document.querySelectorAll('INPUT');
     var wallHeight = pointSet[0].value;
     if (wallHeight == 8) {
         multiplier = 2;
+    } else if (wallHeight == 9) {
+        only54 = true
+    } else {
+        multiplier = Math.round(wallHeight / 4);
     }
+
     for (var i = 1; i < pointSet.length; i++) {
-        var wallLength = pointSet[i].value;
+        var wallLength = pointSet[i].value * multiplier;
         while(wallLength > 0) {
             if (wallLength <= 8) {
-                boards[0] += multiplier;
+                boards[0] += 1;
                 wallLength -= 8;
-                console.log(boards[0]);
-                console.log(i);
             } else if (wallLength <= 9) {
-                boards[1] += multiplier;
+                boards[1] += 1;
                 wallLength -= 9;
             } else if (wallLength <= 10) {
-                boards[2] += multiplier;
+                boards[2] += 1;
                 wallLength -= 10;
             } else if (wallLength <= 12) {
-                boards[3] += multiplier;
+                boards[3] += 1;
                 wallLength -= 12;
             } else if (wallLength <= 14) {
-                boards[4] += multiplier;
+                boards[4] += 1;
                 wallLength -= 14;
             } else {
-                while(wallLength > 0){
-                    wallLength -= 12;
-                    boards[3] += multiplier;
-                }
+                wallLength -= 12;
+                boards[3] += 1;
             }
         }
     }
 
     createList(boards);
-
 }
 
 
@@ -134,7 +128,10 @@ function createList(arr) {
 
 // setup all variables to calculate board
 var setupVariables = () => {
-    const closedPath = false;
+    var closedPath = false;
+    if (stored_points.length == 2 && stored_points[0] == stored_points[stored_points.length-1]) {
+        return;
+    }
     stored_points.splice(-1, 1);
     if (stored_points[0] == stored_points[stored_points.length-1]) {
         console.log("Closed path");
@@ -211,6 +208,7 @@ var initialize = function() {
 
 // main entry point of the program
 function start() {
+
     document.getElementById('blueprint').addEventListener('click', function(event){
 
         var point = {
@@ -222,6 +220,7 @@ function start() {
         if (sectionComplete()) {
             log();
             setupVariables();
+            //push set of vertices to list
             stored_points = [];
             points = [];
         } else {
