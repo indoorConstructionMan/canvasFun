@@ -1,6 +1,34 @@
+/*
+MIT License
+
+Copyright (c) 2018 Aaron
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.*/
+
+// BUG: letters need position adjustment on angled lines.
+// BUG: scaling is an issue.
+
 require('./constants.js');
 require('./drawCanvas.js');
 require('./log.js');
+require('./userInput.js');
+
 
 // import functions from other local files.
 function require(path) {
@@ -17,7 +45,92 @@ window.onload = function() {
 }
 
 
-// Did we double click? if we did then section is complete
+// Reset screen on canvas
+function reset() {
+    drawBackground();
+    removeForm();
+    points = [];
+    stored_points = [];
+}
+
+
+// find board count for 54 inch (9 foot walls)
+// function populate54s(v) {
+//     while (v > 0) {
+//         v -= 12;
+//         boardList.twelves54 += 2;
+//     }
+//     boardList.waste.push(Math.round(Math.abs(v)));
+// }
+
+
+// gets all other board required.
+function populateBoard(wall) {
+    var val = 0;
+    rows = Math.floor(wall.height / 4);
+    remainder = wall.height % 4;
+    for (var i = 0; i < rows; i++) {
+        val = wall.value;
+        while(val > 0) {
+            if (val <= 8) {
+                boardList.eights += 1;
+                val -= 8;
+            } else if (val <= 9) {
+                boardList.nines += 1;
+                val -= 9;
+            } else if (val <= 10) {
+                boardList.tens += 1;
+                val -= 10;
+            }  else {
+                val -= 12;
+                boardList.twelves += 1;
+            }
+        }
+    }
+}
+
+
+// Issue with value?
+function submitForm() {
+    var inputWalls = document.querySelectorAll('INPUT');
+
+    for (var i = 0; i < walls.length; i++) {
+
+            if (walls[i]['loaded']) {
+                walls[i]['loaded'] = false;
+            } else {
+                walls[i]['loaded'] = true;
+                walls[i]['value'] = inputWalls[i+1].value;
+                walls[i]['height'] = inputWalls[0].value;
+                walls[i]['bdft'] = walls[i]['height'] * walls[i]['value'];
+                populateBoard(walls[i]);
+            }
+    }
+
+    console.log(boardList);
+
+    createList();
+}
+
+
+function createList() {
+    var boardNames = ["4' x 8'", "4' x 8' Aqua", "4' x 9'", "4' x 10'", "4' x 10' Aqua", "4' x 12'", "4' x 12 CD'" , "54 x 12'"];
+    var i = 0;
+    for (board in boardList) {
+        if (board.isArray) {
+            continue;
+        }  else if (boardList[board] != 0) {
+            var n = document.createElement('LI');
+            n.innerHTML = boardNames[i] + " := " + boardList[board] + " board(s).";
+            document.getElementById('inputs').appendChild(n);
+        } else {}
+        i += 1;
+    }
+
+}
+
+
+// Did we double click or click on same position twice? if we did then section is complete
 var sectionComplete = function() {
     if (stored_points.length >= 2) {
         if (stored_points[stored_points.length-2].x == stored_points[stored_points.length-1].x) {
@@ -30,185 +143,22 @@ var sectionComplete = function() {
 };
 
 
-// create elements for user to input values
-var createInputFields = function(count) {
-    // add header/title for form
-    var title = document.createElement('H');
-    var text = document.createTextNode("Please Input Measurements");
-    title.appendChild(text);
-    document.getElementById('inputs').appendChild(title);
-
-    //create height input
-    document.getElementById('inputs').appendChild(document.createElement('br'));
-    var h = document.createElement("INPUT");
-    h.setAttribute("type", "text");
-    h.setAttribute("placeholder", "Height");
-    document.getElementById('inputs').appendChild(h);
-
-    // for each line/wall accept a single value
-    for (var i = 0; i < count; i++) {
-        var x = document.createElement("INPUT");
-        x.setAttribute("type", "text");
-        x.setAttribute("placeholder", symbol[i]);
-        document.getElementById('inputs').appendChild(x);
+// stores x,y locations of two points between a wall.
+function storeCoordinates() {
+    var w = getWall();
+    for (var i = 0; i < stored_points.length-1; i++) {
+        w.point1.x = stored_points[i].x;
+        w.point1.y = stored_points[i].y;
+        w.point2.x = stored_points[i+1].x;
+        w.point2.y = stored_points[i+1].y;
+        walls.push(w);
     }
-
-
-    var formButton = document.createElement('BUTTON');
-    formButton.innerHTML = "Calculate materials";
-    formButton.setAttribute('id', 'formButton');
-    formButton.setAttribute('type', 'button');
-    formButton.setAttribute('class', 'w3-button w3-blue');
-    formButton.setAttribute('onclick', 'submitForm()');
-    document.getElementById('inputs').appendChild(formButton);
-    document.getElementById('inputs').appendChild(document.createElement('br'));
-
-    drawSet();
-
-};
-
-
-function submitForm() {
-    // 4*8 4*9 4*10 4*12 4*14 4.5*12
-    var boards = [0, 0, 0, 0, 0, 0];
-    var multiplier = 1;
-    var only54 = false;
-
-    var pointSet = document.querySelectorAll('INPUT');
-    var wallHeight = pointSet[0].value;
-    if (wallHeight == 8) {
-        multiplier = 2;
-    } else if (wallHeight == 9) {
-        only54 = true
-    } else {
-        multiplier = Math.round(wallHeight / 4);
-    }
-
-    for (var i = 1; i < pointSet.length; i++) {
-        var wallLength = pointSet[i].value * multiplier;
-        while(wallLength > 0) {
-            if (wallLength <= 8) {
-                boards[0] += 1;
-                wallLength -= 8;
-            } else if (wallLength <= 9) {
-                boards[1] += 1;
-                wallLength -= 9;
-            } else if (wallLength <= 10) {
-                boards[2] += 1;
-                wallLength -= 10;
-            } else if (wallLength <= 12) {
-                boards[3] += 1;
-                wallLength -= 12;
-            } else if (wallLength <= 14) {
-                boards[4] += 1;
-                wallLength -= 14;
-            } else {
-                wallLength -= 12;
-                boards[3] += 1;
-            }
-        }
-    }
-
-    createList(boards);
 }
-
-
-function createList(arr) {
-    var boardNames = ["4'x 8'", "4' x 9'", "4' x 10'", "4' x 12'", "4' x 14'" , "4.5' x 12'"];
-    for (var i = 0; i < arr.length; i++) {
-            if(arr[i] != 0) {
-                var n = document.createElement('LI');
-                n.innerHTML = boardNames[i] + " => " + arr[i] + " boards.";
-                document.getElementById('inputs').appendChild(n);
-            }
-    }
-
-}
-
-
-// setup all variables to calculate board
-var setupVariables = () => {
-    var closedPath = false;
-    if (stored_points.length == 2 && stored_points[0] == stored_points[stored_points.length-1]) {
-        return;
-    }
-    stored_points.splice(-1, 1);
-    if (stored_points[0] == stored_points[stored_points.length-1]) {
-        console.log("Closed path");
-        closedPath = true;
-    }
-
-    var diffX = 0;
-    var diffY = 0;
-
-    var xNew = 0;
-    var yNew = 0;
-
-    count = 0;
-
-    for (var i = 0; i < stored_points.length-1; i++){
-        // get direction of wall, place text in reasonable place, add a list at
-        // bottom to allow for user input.
-        diffX = stored_points[i].x - stored_points[i+1].x;
-        diffY = stored_points[i].y - stored_points[i+1].y;
-
-        if (!diffY) {
-            xNew = stored_points[i].x - Math.round(diffX/2);
-            yNew = stored_points[i].y + 35;
-        } else if (!diffX) {
-            yNew = stored_points[i].y - Math.round(diffY/2);
-            xNew = stored_points[i].x + 20;
-        } else {
-            xNew = stored_points[i].x - Math.round(diffX/2) + PADDING;
-            yNew = stored_points[i].y - Math.round(diffY/2) - PADDING;
-        }
-
-        drawText(xNew, yNew, symbol[i]);
-        count += 1;
-    }
-
-    createInputFields(count);
-
-
-    if (closedPath) {
-        console.log("Confirmed closed");
-    }
-};
-
-
-// initialize the grid in the background.
-var initialize = function() {
-
-    var canvas = document.getElementById('blueprint'),
-        context = canvas.getContext('2d');
-    var xDelta = UNIT;
-    var yDelta = UNIT;
-
-    // DRAW LINES
-    do {
-        drawLine({ x: xDelta, y: UNIT},
-                 { x: xDelta, y: SCREEN_HEIGHT - UNIT},
-                 "#d3d3d3",
-                 LINE_WIDTH
-        );
-        xDelta += UNIT;
-    } while (xDelta < SCREEN_WIDTH);
-
-    //horizontal lines
-    do {
-        drawLine({ x: UNIT, y: yDelta},
-                 { x: SCREEN_WIDTH - UNIT, y: yDelta},
-                 "#d3d3d3",
-                 LINE_WIDTH
-        );
-        yDelta += UNIT;
-    } while(yDelta < SCREEN_HEIGHT);
-};
 
 
 // main entry point of the program
 function start() {
-
+    // Grab canvas tag add a listen
     document.getElementById('blueprint').addEventListener('click', function(event){
 
         var point = {
@@ -218,9 +168,9 @@ function start() {
 
         stored_points.push(point);
         if (sectionComplete()) {
-            log();
-            setupVariables();
-            //push set of vertices to list
+            //log();
+            buildForm();
+            storeCoordinates();
             stored_points = [];
             points = [];
         } else {
@@ -229,5 +179,5 @@ function start() {
         }
     }, false);
 
-    initialize();
+    drawBackground();
 }
