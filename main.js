@@ -24,10 +24,11 @@ SOFTWARE.*/
 // BUG: letters need position adjustment on angled lines.
 // BUG: scaling is an issue.
 
-require('./constants.js');
-require('./drawCanvas.js');
-require('./log.js');
-require('./userInput.js');
+require('./misc/constants.js');
+require('./ui/drawCanvas.js');
+require('./misc/log.js');
+require('./ui/materialsForm.js');
+require('./ui/materialsList.js');
 
 
 // import functions from other local files.
@@ -45,55 +46,10 @@ window.onload = function() {
 }
 
 
-// Reset screen on canvas
-function reset() {
-    drawBackground();
-    removeForm();
-    points = [];
-    stored_points = [];
-}
-
-
-// find board count for 54 inch (9 foot walls)
-// function populate54s(v) {
-//     while (v > 0) {
-//         v -= 12;
-//         boardList.twelves54 += 2;
-//     }
-//     boardList.waste.push(Math.round(Math.abs(v)));
-// }
-
-
-// gets all other board required.
-function populateBoard(wall) {
-    var val = 0;
-    rows = Math.floor(wall.height / 4);
-    remainder = wall.height % 4;
-    for (var i = 0; i < rows; i++) {
-        val = wall.value;
-        while(val > 0) {
-            if (val <= 8) {
-                boardList.eights += 1;
-                val -= 8;
-            } else if (val <= 9) {
-                boardList.nines += 1;
-                val -= 9;
-            } else if (val <= 10) {
-                boardList.tens += 1;
-                val -= 10;
-            }  else {
-                val -= 12;
-                boardList.twelves += 1;
-            }
-        }
-    }
-}
-
-
 // Issue with value?
 function submitForm() {
     var inputWalls = document.querySelectorAll('INPUT');
-
+    clearBoardList();
     for (var i = 0; i < walls.length; i++) {
 
             if (walls[i]['loaded']) {
@@ -106,27 +62,7 @@ function submitForm() {
                 populateBoard(walls[i]);
             }
     }
-
-    console.log(boardList);
-
     createList();
-}
-
-
-function createList() {
-    var boardNames = ["4' x 8'", "4' x 8' Aqua", "4' x 9'", "4' x 10'", "4' x 10' Aqua", "4' x 12'", "4' x 12 CD'" , "54 x 12'"];
-    var i = 0;
-    for (board in boardList) {
-        if (board.isArray) {
-            continue;
-        }  else if (boardList[board] != 0) {
-            var n = document.createElement('LI');
-            n.innerHTML = boardNames[i] + " := " + boardList[board] + " board(s).";
-            document.getElementById('inputs').appendChild(n);
-        } else {}
-        i += 1;
-    }
-
 }
 
 
@@ -153,6 +89,9 @@ function storeCoordinates() {
         w.point2.y = stored_points[i+1].y;
         walls.push(w);
     }
+
+    stored_points = [];
+    points = [];
 }
 
 
@@ -171,8 +110,6 @@ function start() {
             //log();
             buildForm();
             storeCoordinates();
-            stored_points = [];
-            points = [];
         } else {
             points.push(point);
             draw(points[0], points[1]);

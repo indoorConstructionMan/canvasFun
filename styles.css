@@ -46,3 +46,16 @@ input {
 input:focus {
     border: 3px solid #555;
 }
+
+
+ul {
+    background: #5792f2;
+    padding: 20px;
+}
+
+
+ul li {
+    background: #cce5ff;
+    margin: 5px;
+    list-style-type: none;
+}

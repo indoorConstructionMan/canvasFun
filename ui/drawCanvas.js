@@ -76,6 +76,7 @@ var drawText = function(xpos, ypos, message) {
 };
 
 
+// Draw a set of points
 var drawSet = function() {
     for (var i = 0; i < stored_points.length-1; i++) {
         drawLine(stored_points[i], stored_points[i+1], WHITE, LINE_WIDTH);
@@ -86,6 +87,8 @@ var drawSet = function() {
     }
 };
 
+
+// clears the entire canvas
 var clearScreen = function() {
     var c = document.getElementById("blueprint");
     var ctx = c.getContext("2d");
@@ -93,6 +96,7 @@ var clearScreen = function() {
 };
 
 
+// Redraws the grid
 var drawBackground = function() {
     clearScreen();
     var canvas = document.getElementById('blueprint'),
@@ -119,4 +123,14 @@ var drawBackground = function() {
         );
         yDelta += UNIT;
     } while(yDelta < SCREEN_HEIGHT);
+}
+
+
+
+// Reset screen on canvas
+function reset() {
+    drawBackground();
+    removeForm();
+    points = [];
+    stored_points = [];
 }

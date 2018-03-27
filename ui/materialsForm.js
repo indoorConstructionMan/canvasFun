@@ -79,6 +79,7 @@ var createInputFields = function(count) {
 };
 
 
+// TODO: deal with closed path, add a include ceiling calculation
 // setup all variables to calculate board
 var buildForm = () => {
     var closedPath = false;

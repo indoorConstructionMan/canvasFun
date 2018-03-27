@@ -71,7 +71,6 @@ var boardList = {
     twelves: 0,
     twelvesCd: 0,
     twelves54: 0,
-    // pieces x 4'
     waste: []
 };
 
