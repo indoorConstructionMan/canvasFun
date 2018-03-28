@@ -49,6 +49,7 @@ var drawDot = function(p, styling, radius) {
     context.stroke();
 };
 
+
 // called in main logic, handles what to draw
 var drawWall = function(wall) {
     var canvas = document.getElementById('blueprint'),
@@ -58,6 +59,7 @@ var drawWall = function(wall) {
         drawLine(wall.getPoint1(), wall.getPoint2(), BLACK, LINE_WIDTH);
         drawDot(wall.getPoint2(), BLACK, POINT_INNER);
 };
+
 
 // called in main logic, handles what to draw
 var drawPoint = function(p1) {
@@ -69,22 +71,6 @@ var drawPoint = function(p1) {
 };
 
 
-// called in main logic, handles what to draw
-var draw = function(p1, p2) {
-    var canvas = document.getElementById('blueprint'),
-        context = canvas.getContext('2d');
-    if (points.length == 2){
-        drawDot(p2, BLUEPRINTBLUE, POINT_OUTER);
-        drawLine(p1, p2, BLACK, LINE_WIDTH);
-        drawDot(p2, BLACK, POINT_INNER);
-        points.shift();
-    } else {
-        drawDot(p1, BLUEPRINTBLUE, POINT_OUTER);
-        drawDot(p1, BLACK, POINT_INNER);
-    }
-};
-
-
 // draws variables by walls
 var drawText = function(xpos, ypos, message) {
     var canvas = document.getElementById('blueprint'),
@@ -92,17 +78,6 @@ var drawText = function(xpos, ypos, message) {
 
     context.font = "30px Arial";
     context.strokeText(message, xpos, ypos);
-};
-
-// Draw a set of points
-var drawSet = function() {
-    for (var i = 0; i < stored_points.length-1; i++) {
-        drawLine(stored_points[i], stored_points[i+1], WHITE, LINE_WIDTH);
-        drawDot(stored_points[i], WHITE, POINT_OUTER);
-        drawDot(stored_points[i+1], WHITE, POINT_OUTER);
-        drawDot(stored_points[i], BLACK, POINT_INNER);
-        drawDot(stored_points[i+1], BLACK, POINT_INNER);
-    }
 };
 
 
@@ -149,6 +124,4 @@ var drawBackground = function() {
 function reset() {
     drawBackground();
     removeForm();
-    points = [];
-    stored_points = [];
 }

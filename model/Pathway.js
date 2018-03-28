@@ -76,7 +76,6 @@ Pathway.prototype.checkComplete = function() {
 
 // Draw a set of points
 Pathway.prototype.drawSetOfLines = function() {
-
     for (wall in this.path.walls) {
         p1 = this.path.walls[wall].getPoint1();
         p2 = this.path.walls[wall].getPoint2();
@@ -100,12 +99,13 @@ Pathway.prototype.createInputFields = function(count) {
         document.getElementById('inputs').appendChild(x);
     }
     createFormButton();
-    drawSet();
 };
 
 
 // need to clean this up...
 Pathway.prototype.buildPathForm = function() {
+
+    this.drawSetOfLines();
     var diffX = 0;
     var diffY = 0;
 

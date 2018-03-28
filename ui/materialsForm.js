@@ -62,18 +62,3 @@ var createFormButton = function() {
     document.getElementById('inputs').appendChild(formButton);
     document.getElementById('inputs').appendChild(document.createElement('br'));
 };
-
-
-// create elements for user to input values
-var createInputFields = function(count) {
-    createFormTitle();
-    createHeightInput();
-    for (var i = 0; i < count; i++) {
-        var x = document.createElement("INPUT");
-        x.setAttribute("type", "text");
-        x.setAttribute("placeholder", symbol[i]);
-        document.getElementById('inputs').appendChild(x);
-    }
-    createFormButton();
-    drawSet();
-};

@@ -29,9 +29,9 @@ require('./ui/drawCanvas.js');
 require('./misc/log.js');
 require('./ui/materialsForm.js');
 require('./ui/materialsList.js');
-require('./Pathway.js');
-require('./BoardingList.js');
-require('./Wall.js');
+require('./model/Pathway.js');
+require('./model/BoardingList.js');
+require('./model/Wall.js');
 
 
 // import functions from other local files.
@@ -84,7 +84,6 @@ function start() {
             drawWall(wall);
             path.addWall(wall);
             if(path.checkComplete()) {
-                path.drawSetOfLines();
                 path.buildPathForm();
             }
             var point2 = wall.getPoint2();
