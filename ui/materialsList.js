@@ -23,7 +23,11 @@ SOFTWARE.*/
 
 // if 9 foot walls, go ahead and get board for that
 function getTwelves54(w) {
+
+    var ls = wall.getList();
+    var w = wall['wall'];
     var remainder = [];
+
     var twelves54 = 0;
     var wallLength = parseInt(w.value);
     for (var i = 0; i < parseInt(w.height/4.5); i++) {
@@ -46,27 +50,18 @@ function getTwelves54(w) {
             }
         }
     }
-    boardList.twelves54 = twelves54;
-    boardList.waste = remainder;
-}
-
-
-// clears boardList
-function clearBoardList() {
-    for (board in boardList) {
-        if (board.isArray) {
-            boardList[board] = [];
-        } else {
-            boardList[board] = 0;
-        }
-    }
+    ls.board['new']['twelves54'].count = twelves54;
+    ls.board['scrap'] = remainder;
 }
 
 
 // goes through a wall, and adds board and scrap to boardList object
-function getBoard(w) {
-    // need to do something with this extra height
+function getBoard(wall) {
+
+    var ls = wall.getList();
+    var w = wall['wall'];
     var r = w.height % 4;
+
     var remainder = [];
     for (var i = 0; i < Math.floor(w.height/4); i++) {
         wallLength = parseInt(w.value);
@@ -82,16 +77,16 @@ function getBoard(w) {
             if (wallLength > 0) {
                 if (wallLength <= 8) {
                     wallLength -= 8;
-                    boardList.eights += 1;
+                    ls.board['new']['eights'].count += 1;
                 } else if (wallLength <= 9) {
                     wallLength -= 9;
-                    boardList.nines += 1;
+                    ls.board['new']['nines'].count += 1;
                 } else if (wallLength <= 10) {
                     wallLength -= 10;
-                    boardList.tens += 1;
+                    ls.board['new']['tens'].count += 1;
                 } else {
                     wallLength -= 12;
-                    boardList.twelves += 1;
+                    ls.board['new']['twelves'].count += 1;
                 }
             }
             if (wallLength < 0) {
@@ -99,12 +94,14 @@ function getBoard(w) {
             }
         }
     }
-    boardList.waste = remainder;
+
+    ls.board['scrap'] = remainder;
 }
+
+
 
 // gets all other board required.
 function populateBoard(wall) {
-
     var h = wall.height;
     switch (h) {
         case '9':
@@ -116,23 +113,35 @@ function populateBoard(wall) {
     }
 }
 
-// for each board added to the list, it prints them out.
-function createList() {
+
+function createWalls(w) {
+
     var ul = document.createElement('UL');
     ul.setAttribute('id', 'unordered');
     document.getElementById('inputs').appendChild(ul);
     var boardNames = ["4' x 8'", "4' x 8' Aqua", "4' x 9'", "4' x 10'", "4' x 10' Aqua", "4' x 12'", "4' x 12 CD'", "54 x 12'", "Waste: "];
     var i = 0;
-    for (board in boardList) {
-        if (boardList[board] != 0) {
-            var n = document.createElement('LI');
-            if (i == 8) {
-                n.innerHTML = boardNames[i] + " := " + boardList[board] + " Chunk(s).";
-            } else {
-                n.innerHTML = boardNames[i] + " := " + boardList[board] + " board(s).";
+    var ls = w;
+
+    for (b in ls) {
+        try {
+            var wallList = ls[b].getList().board.new;
+            for (ls in wallList){
+                if (wallList[ls].count != 0) {
+                    var n = document.createElement('LI');
+                    if (i == 8) {
+                        n.innerHTML = boardNames[i] + " := " + wallList[ls].count + " Chunk(s).";
+                    } else {
+                        n.innerHTML = boardNames[i] + " := " + wallList[ls].count + " board(s).";
+                    }
+                    document.getElementById('unordered').appendChild(n);
+                }
+                i += 1;
             }
-            document.getElementById('unordered').appendChild(n);
+        } catch (err) {
+            //console.log(err);
         }
-        i += 1;
+
     }
+
 }

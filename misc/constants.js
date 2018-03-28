@@ -36,11 +36,15 @@ const BLUEPRINTBLUE = "#d3d3d3";
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";
 
+var wall;
 var points = [];
 var stored_points = [];
 
 var walls = [];
 var boardlists = [];
+
+
+var pathway;
 
 var symbol = [
     'x',

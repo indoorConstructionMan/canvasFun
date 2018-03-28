@@ -29,12 +29,15 @@ require('./ui/drawCanvas.js');
 require('./misc/log.js');
 require('./ui/materialsForm.js');
 require('./ui/materialsList.js');
+require('./Pathway.js');
+require('./BoardingList.js');
+require('./Wall.js');
 
 
 // import functions from other local files.
-function require(path) {
+function require(locationInProject) {
     var imported = document.createElement('script');
-    imported.src = path;
+    imported.src = locationInProject;
     document.head.appendChild(imported);
 }
 
@@ -49,54 +52,24 @@ window.onload = function() {
 // Issue with value?
 function submitForm() {
     var inputWalls = document.querySelectorAll('INPUT');
-    clearBoardList();
-    for (var i = 0; i < walls.length; i++) {
 
-            if (walls[i]['loaded']) {
-                walls[i]['loaded'] = false;
-            } else {
-                walls[i]['loaded'] = true;
-                walls[i]['value'] = inputWalls[i+1].value;
-                walls[i]['height'] = inputWalls[0].value;
-                walls[i]['bdft'] = walls[i]['height'] * walls[i]['value'];
-                populateBoard(walls[i]);
-            }
+    var i = 0;
+    for (w in pathway.path['walls']) {
+        var setWalls = pathway.path['walls'][w];
+        setWalls.getWall()['height'] = inputWalls[0].value;
+        setWalls.getWall()['value'] = inputWalls[1].value;
+        populateBoard(setWalls);
+        i += 1;
     }
-    createList();
-}
-
-
-// Did we double click or click on same position twice? if we did then section is complete
-var sectionComplete = function() {
-    if (stored_points.length >= 2) {
-        if (stored_points[stored_points.length-2].x == stored_points[stored_points.length-1].x) {
-            if (stored_points[stored_points.length-2].y == stored_points[stored_points.length-1].y) {
-                return true;
-            }
-        }
-    }
-    return false;
-};
-
-
-// stores x,y locations of two points between a wall.
-function storeCoordinates() {
-    var w = getWall();
-    for (var i = 0; i < stored_points.length-1; i++) {
-        w.point1.x = stored_points[i].x;
-        w.point1.y = stored_points[i].y;
-        w.point2.x = stored_points[i+1].x;
-        w.point2.y = stored_points[i+1].y;
-        walls.push(w);
-    }
-
-    stored_points = [];
-    points = [];
+    createWalls(pathway.path['walls']);
 }
 
 
 // main entry point of the program
 function start() {
+    var path = new Pathway();
+    var wall = new Wall();
+    pathway = path;
     // Grab canvas tag add a listen
     document.getElementById('blueprint').addEventListener('click', function(event){
 
@@ -105,15 +78,25 @@ function start() {
             y: Math.round(event.clientY/UNIT) * UNIT
         };
 
-        stored_points.push(point);
-        if (sectionComplete()) {
-            //log();
-            buildForm();
-            storeCoordinates();
+
+        if (wall.listExist()) {
+            wall.setPoint2(point);
+            drawWall(wall);
+            path.addWall(wall);
+            if(path.checkComplete()) {
+                path.drawSetOfLines();
+                path.buildPathForm();
+            }
+            var point2 = wall.getPoint2();
+            wall = new Wall();
+            wall.setPoint1(point2);
+            wall.attachList(new BoardingList());
         } else {
-            points.push(point);
-            draw(points[0], points[1]);
+            wall.setPoint1(point);
+            drawPoint(wall.getPoint1());
+            wall.attachList(new BoardingList());
         }
+
     }, false);
 
     drawBackground();

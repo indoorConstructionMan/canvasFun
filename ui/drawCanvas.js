@@ -49,6 +49,25 @@ var drawDot = function(p, styling, radius) {
     context.stroke();
 };
 
+// called in main logic, handles what to draw
+var drawWall = function(wall) {
+    var canvas = document.getElementById('blueprint'),
+        context = canvas.getContext('2d');
+
+        drawDot(wall.getPoint2(), BLUEPRINTBLUE, POINT_OUTER);
+        drawLine(wall.getPoint1(), wall.getPoint2(), BLACK, LINE_WIDTH);
+        drawDot(wall.getPoint2(), BLACK, POINT_INNER);
+};
+
+// called in main logic, handles what to draw
+var drawPoint = function(p1) {
+    var canvas = document.getElementById('blueprint'),
+        context = canvas.getContext('2d');
+
+        drawDot(p1, BLUEPRINTBLUE, POINT_OUTER);
+        drawDot(p1, BLACK, POINT_INNER);
+};
+
 
 // called in main logic, handles what to draw
 var draw = function(p1, p2) {
@@ -74,7 +93,6 @@ var drawText = function(xpos, ypos, message) {
     context.font = "30px Arial";
     context.strokeText(message, xpos, ypos);
 };
-
 
 // Draw a set of points
 var drawSet = function() {
