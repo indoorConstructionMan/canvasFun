@@ -37,13 +37,6 @@ const BLACK = "#000000";
 const WHITE = "#FFFFFF";
 
 var wall;
-var points = [];
-var stored_points = [];
-
-var walls = [];
-var boardlists = [];
-
-
 var pathway;
 
 var symbol = [
@@ -63,36 +56,3 @@ var symbol = [
     'k',
     'l'
 ];
-
-
-
-var boardList = {
-    eights: 0,
-    eightsAqua: 0,
-    nines: 0,
-    tens: 0,
-    tensAqua: 0,
-    twelves: 0,
-    twelvesCd: 0,
-    twelves54: 0,
-    waste: []
-};
-
-
-
-var getWall = function() {
-    return {
-        loaded: false,
-        value: 0,
-        height: 0,
-        bdft: 0,
-        point1: {
-            x: 0,
-            y: 0,
-        },
-        point2: {
-            x: 0,
-            y: 0,
-        }
-    };
-}
