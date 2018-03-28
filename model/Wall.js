@@ -25,13 +25,48 @@ function Wall() {
     this.wall = {
         firstPoint: false,
         value: 0,
-        loaded: false,
         p1: {x:0, y:0},
         p2: {x:0, y:0},
         boardlist: null,
         height: 0
     }
 }
+
+
+
+// init
+Wall.prototype.init = function(point, ls) {
+    this.setPoint1(point);
+    drawPoint(this.getPoint1());
+    this.attachList(new BoardingList());
+};
+
+
+// update
+Wall.prototype.update = function(point) {
+    this.setPoint1(point);
+    this.attachList(new BoardingList());
+};
+
+
+//
+Wall.prototype.setAndDraw = function(point) {
+    this.setPoint2(point);
+    drawWall(this);
+};
+
+
+// set height
+Wall.prototype.setHeight = function(ht) {
+    this.wall.height = ht;
+};
+
+
+
+// get height
+Wall.prototype.getHeight = function() {
+    return this.wall.height;
+};
 
 
 // get wall

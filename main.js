@@ -23,15 +23,16 @@ SOFTWARE.*/
 
 // BUG: letters need position adjustment on angled lines.
 // BUG: scaling is an issue.
+// BUG: Clear button clears elements, but remembers and continues path.
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
 require('./misc/log.js');
 require('./ui/materialsForm.js');
 require('./ui/materialsList.js');
-require('./model/Pathway.js');
 require('./model/BoardingList.js');
 require('./model/Wall.js');
+require('./model/Pathway.js');
 
 
 // import functions from other local files.
@@ -49,19 +50,16 @@ window.onload = function() {
 }
 
 
-// Issue with value?
+// onclick handler for materials submit Form
 function submitForm() {
     var inputWalls = document.querySelectorAll('INPUT');
-
-    var i = 0;
-    for (w in pathway.path['walls']) {
-        var setWalls = pathway.path['walls'][w];
-        setWalls.getWall()['height'] = inputWalls[0].value;
-        setWalls.getWall()['value'] = inputWalls[1].value;
-        populateBoard(setWalls);
-        i += 1;
+    var setWalls = pathway.getWalls();
+    for (w in setWalls) {
+        setWalls[w].setHeight(inputWalls[0].value);
+        setWalls[w].setValue(inputWalls[1].value);
+        populateBoard(setWalls[w]);
     }
-    createWalls(pathway.path['walls']);
+    createWalls(setWalls);
 }
 
 
@@ -78,23 +76,26 @@ function start() {
             y: Math.round(event.clientY/UNIT) * UNIT
         };
 
-
-        if (wall.listExist()) {
-            wall.setPoint2(point);
-            drawWall(wall);
-            path.addWall(wall);
-            if(path.checkComplete()) {
-                path.buildPathForm();
-            }
-            var point2 = wall.getPoint2();
-            wall = new Wall();
-            wall.setPoint1(point2);
-            wall.attachList(new BoardingList());
-        } else {
-            wall.setPoint1(point);
-            drawPoint(wall.getPoint1());
-            wall.attachList(new BoardingList());
+        switch(FIRSTCLICK) {
+            // First click of a path
+            case true:
+                FIRSTCLICK = false;
+                wall.init(point);
+                break;
+            // not the first click in a path
+            case false:
+                wall.setAndDraw(point);
+                if(!path.addWallAndBuildPathForm(wall)) {
+                    var point2 = wall.getPoint2();
+                    wall = new Wall();
+                    wall.update(point2);
+                } else {
+                    path = new Pathway();
+                    FIRSTCLICK = true;
+                }
+                break;
         }
+
 
     }, false);
 

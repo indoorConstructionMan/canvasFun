@@ -31,7 +31,7 @@ const LINE_WIDTH = 10;
 const SCREEN_WIDTH = 1200;
 const SCREEN_HEIGHT = 1100;
 const PADDING = 10;
-
+var FIRSTCLICK = true;
 const BLUEPRINTBLUE = "#d3d3d3";
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";

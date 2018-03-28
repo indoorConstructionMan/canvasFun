@@ -29,6 +29,25 @@ function Pathway() {
 }
 
 
+
+// adds wall and builds platform if ready
+Pathway.prototype.addWallAndBuildPathForm = function(wall) {
+    this.addWall(wall);
+    return this.checkAndBuildPathForm();
+s};
+
+
+
+// set closed condition
+Pathway.prototype.checkAndBuildPathForm = function() {
+    if (this.checkComplete()) {
+        this.buildPathForm();
+        logData();
+        return true;
+    }
+    return false;
+};
+
 // set closed condition
 Pathway.prototype.setClosed = function(state) {
     this.path.closed = state;
