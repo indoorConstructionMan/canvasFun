@@ -27,11 +27,9 @@ function Wall() {
         value: 0,
         p1: {x:0, y:0},
         p2: {x:0, y:0},
-        boardlist: null,
         height: 0
     }
 }
-
 
 
 // init
@@ -49,7 +47,7 @@ Wall.prototype.update = function(point) {
 };
 
 
-//
+// sets and draws point
 Wall.prototype.setAndDraw = function(point) {
     this.setPoint2(point);
     drawWall(this);
@@ -60,7 +58,6 @@ Wall.prototype.setAndDraw = function(point) {
 Wall.prototype.setHeight = function(ht) {
     this.wall.height = ht;
 };
-
 
 
 // get height
@@ -141,12 +138,6 @@ Wall.prototype.getPoint2 = function() {
 // set points the user is drwaing out.
 Wall.prototype.getPoint1 = function() {
     return this.wall.p1;
-};
-
-
-// set points the user is drwaing out.
-Wall.prototype.getList = function() {
-    return this.boardlist;
 };
 
 

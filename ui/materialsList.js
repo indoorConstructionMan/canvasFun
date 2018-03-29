@@ -55,49 +55,141 @@ function getTwelves54(w) {
 }
 
 
-// goes through a wall, and adds board and scrap to boardList object
-function getBoard(wall) {
+function positive(s) {
+    for (var i = 0; i < s.length; i++) {
+        if (s[i] > 0) {
+            return true
+        }
+    }
+    return false;
+}
 
-    var ls = wall.getList();
-    var w = wall['wall'];
-    var r = w.height % 4;
 
-    var remainder = [];
-    for (var i = 0; i < Math.floor(w.height/4); i++) {
-        wallLength = parseInt(w.value);
-        while (wallLength > 0) {
-            // if there's scrap, use it
-            for (var j = 0; j < remainder.length; j++) {
-                if (wallLength <= remainder[j]) {
-                    wallLength -= remainder[j];
-                    remainder.splice(j, 1);
-                    break;
+function findBoard(wall) {
+
+    var materialList = wall['boardlist'];
+    var wallData = wall['wall'];
+    //materialList.add('nines', 5);
+    var numberOfRows = Math.floor(wall.getHeight()/4);
+    var waste = [];
+
+    var sections = new Array(numberOfRows);
+    for (var i = 0; i < sections.length; i++) {
+        sections[i] = parseInt(wall.getValue());
+    }
+
+    while (positive(sections)) {
+
+        for (var i = 0; i < sections.length; i++) {
+            if (sections[i] > 0) {
+                for (var j = 0; j < waste.length; j++) {
+                    if (sections[i] <= waste[j]) {
+                        sections[i] -= waste[j];
+                        waste.splice(j, 1);
+                        console.log(waste);
+                        break;
+                    }
                 }
             }
-            if (wallLength > 0) {
-                if (wallLength <= 8) {
-                    wallLength -= 8;
-                    ls.board['new']['eights'].count += 1;
-                } else if (wallLength <= 9) {
-                    wallLength -= 9;
-                    ls.board['new']['nines'].count += 1;
-                } else if (wallLength <= 10) {
-                    wallLength -= 10;
-                    ls.board['new']['tens'].count += 1;
-                } else {
-                    wallLength -= 12;
-                    ls.board['new']['twelves'].count += 1;
+        }
+
+        if (sections[0] == sections[1] && sections[0] == parseInt(wall.getValue())) {
+
+            if (sections[0] <= 4) {
+                console.log("added eight");
+                materialList.addOne('eights');
+                sections[0] -= 8;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
                 }
-            }
-            if (wallLength < 0) {
-                remainder.push(Math.abs(wallLength));
+            } else if (sections[0] <= 5) {
+                console.log("added ten");
+                materialList.addOne('tens');
+                sections[0] -= 10;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                }
+            } else if (sections[0] <= 6) {
+                console.log("added twelve");
+                materialList.addOne('twelves');
+                sections[0] -= 12;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                }
+            } else if (sections[0] <= 7) {
+                console.log("added 2 eights");
+                materialList.addOne('eights');
+                materialList.addOne('eights');
+                sections[0] -= 8;
+                sections[1] -= 8;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                    waste.push(Math.abs(sections[1]));
+                }
+            } else if (sections[0] <= 8) {
+                console.log("added 2 eights");
+                materialList.addOne('eights');
+                materialList.addOne('eights');
+                sections[0] -= 8;
+                sections[1] -= 8;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                    waste.push(Math.abs(sections[1]));
+                }
+            } else if (sections[0] <= 9) {
+                console.log("added 2 nines");
+                materialList.addOne('nines');
+                materialList.addOne('nines');
+                sections[0] -= 9;
+                sections[1] -= 9;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                    waste.push(Math.abs(sections[1]));
+                }
+            } else if (sections[0] <= 10) {
+                console.log("added 2 tens");
+                materialList.addOne('tens');
+                materialList.addOne('tens');
+                sections[0] -= 10;
+                sections[1] -= 10;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                    waste.push(Math.abs(sections[1]));
+                }
+            } else if (sections[0] <= 12) {
+                console.log("added 2 twelves");
+                materialList.addOne('twelves');
+                materialList.addOne('twelves');
+                sections[0] -= 12;
+                sections[1] -= 12;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                    waste.push(Math.abs(sections[1]));
+                }
+            }else {
+                console.log("added eight for no reason");
+                materialList.addOne('eights');
+                sections[0] -= 8;
+                sections[1] -= 8;
+                if(sections[0] < 0) {
+                    waste.push(Math.abs(sections[0]));
+                }
             }
         }
     }
-
-    ls.board['scrap'] = remainder;
+    materialList.addScrap(waste);
 }
 
+
+function calculateBoard(wall) {
+    var w = wall.getWall();
+    // find out if we are on the last one. If so, skip it
+    if (w.p1.x == w.p2.x && w.p1.y == w.p2.y && w.p1.x != 0) {
+        // do something useful
+    } else {
+        findBoard(wall);
+    }
+}
 
 
 // gets all other board required.
@@ -114,23 +206,23 @@ function populateBoard(wall) {
 }
 
 
+// needs to be renamed.
 function createWalls(w) {
-
     var ul = document.createElement('UL');
     ul.setAttribute('id', 'unordered');
     document.getElementById('inputs').appendChild(ul);
-    var boardNames = ["4' x 8'", "4' x 8' Aqua", "4' x 9'", "4' x 10'", "4' x 10' Aqua", "4' x 12'", "4' x 12 CD'", "54 x 12'", "Waste: "];
+    var boardNames = ["4' x 8'", "4' x 8' Aqua", "4' x 9'", "4' x 10'", "4' x 10' Aqua", "4' x 12'", "4' x 12 CD'", "54 x 12'", "Waste "];
     var i = 0;
     var ls = w;
 
     for (b in ls) {
         try {
-            var wallList = ls[b].getList().board.new;
+            var wallList = w[0]['boardlist']['board']['new'];
             for (ls in wallList){
                 if (wallList[ls].count != 0) {
                     var n = document.createElement('LI');
                     if (i == 8) {
-                        n.innerHTML = boardNames[i] + " := " + wallList[ls].count + " Chunk(s).";
+                        n.innerHTML = boardNames[i] + " := " + w[0]['boardlist']['board'].scrap + " Chunk(s).";
                     } else {
                         n.innerHTML = boardNames[i] + " := " + wallList[ls].count + " board(s).";
                     }
@@ -141,7 +233,5 @@ function createWalls(w) {
         } catch (err) {
             //console.log(err);
         }
-
     }
-
 }

@@ -38,6 +38,7 @@ const WHITE = "#FFFFFF";
 
 var wall;
 var pathway;
+var pathways = [];
 
 var symbol = [
     'x',

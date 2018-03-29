@@ -37,6 +37,12 @@ function BoardingList() {
 }
 
 
+// returns list
+BoardingList.prototype.getList = function() {
+    return this.board.new;
+};
+
+
 // returns boardft of current list.
 BoardingList.prototype.getSqft = function() {
     var sum = 0;
@@ -59,13 +65,19 @@ BoardingList.prototype.getSqftWaste = function() {
 
 // add value to the list.
 BoardingList.prototype.add = function(board, value) {
-    this.board[board].count += value;
+    this.board.new[board].count += value;
 };
 
 
-// For adding the remainder.
-BoardingList.prototype.addScrap = function(value) {
-    this.board.scrap.push(value);
+// add scrap to the list.
+BoardingList.prototype.addScrap = function(scrap) {
+    this.board.scrap.push(scrap);
+};
+
+
+// add 1 to the list.
+BoardingList.prototype.addOne = function(board) {
+    this.add(board, 1);
 };
 
 

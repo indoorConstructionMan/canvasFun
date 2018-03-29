@@ -29,24 +29,22 @@ function Pathway() {
 }
 
 
-
 // adds wall and builds platform if ready
 Pathway.prototype.addWallAndBuildPathForm = function(wall) {
     this.addWall(wall);
     return this.checkAndBuildPathForm();
-s};
-
+};
 
 
 // set closed condition
 Pathway.prototype.checkAndBuildPathForm = function() {
     if (this.checkComplete()) {
         this.buildPathForm();
-        logData();
         return true;
     }
     return false;
 };
+
 
 // set closed condition
 Pathway.prototype.setClosed = function(state) {
@@ -85,7 +83,6 @@ Pathway.prototype.getFullSqft = function() {
 // check if path is fully drawn
 Pathway.prototype.checkComplete = function() {
     var current = this.path.walls[this.path.walls.length-1];
-
     if (current.getPoint1().x == current.getPoint2().x && current.getPoint2().y == current.getPoint2().y) {
         return true;
     }
@@ -95,9 +92,10 @@ Pathway.prototype.checkComplete = function() {
 
 // Draw a set of points
 Pathway.prototype.drawSetOfLines = function() {
-    for (wall in this.path.walls) {
-        p1 = this.path.walls[wall].getPoint1();
-        p2 = this.path.walls[wall].getPoint2();
+    var wallsInPath = this.getWalls();
+    for (wall in wallsInPath) {
+        p1 = wallsInPath[wall].getPoint1();
+        p2 = wallsInPath[wall].getPoint2();
         drawLine(p1, p2, WHITE, LINE_WIDTH);
         drawDot(p1, WHITE, POINT_OUTER);
         drawDot(p2, WHITE, POINT_OUTER);
@@ -125,32 +123,31 @@ Pathway.prototype.createInputFields = function(count) {
 Pathway.prototype.buildPathForm = function() {
 
     this.drawSetOfLines();
+    var wallsInPath = this.getWalls();
+    var len = wallsInPath.length;
     var diffX = 0;
     var diffY = 0;
-
-    var xNew = 0;
-    var yNew = 0;
-
-    var len = this.getWalls().length;
-
     for (var i = 0; i < len-1; i++) {
-        diffX = this.path.walls[i].getPoint1().x - this.path.walls[i].getPoint2().x;
-        diffY = this.path.walls[i].getPoint1().y - this.path.walls[i].getPoint2().y;
+        var xNew = 0,
+            yNew = 0,
+            point1 = wallsInPath[i].getPoint1(),
+            point2 = wallsInPath[i].getPoint2();
+
+        diffX = point1.x - point2.x;
+        diffY = point1.y - point2.y;
 
         if (!diffY) {
-            xNew = this.path.walls[i].getPoint1().x - Math.round(diffX/2);
-            yNew = this.path.walls[i].getPoint1().y + 35;
+            xNew = point1.x - Math.round(diffX/2);
+            yNew = point1.y + 35;
         } else if (!diffX) {
-            yNew = this.path.walls[i].getPoint1().y - Math.round(diffY/2);
-            xNew = this.path.walls[i].getPoint1().x + 20;
+            yNew = point1.y - Math.round(diffY/2);
+            xNew = point1.x + 20;
         } else {
-            xNew = this.path.walls[i].getPoint1().x - Math.round(diffX/2) + PADDING;
-            yNew = this.path.walls[i].getPoint1().y - Math.round(diffY/2) - PADDING;
+            xNew = point1.x - Math.round(diffX/2) + PADDING;
+            yNew = point1.y - Math.round(diffY/2) - PADDING;
         }
 
         drawText(xNew, yNew, symbol[i]);
     }
-
     this.createInputFields(len-1);
-
 };

@@ -29,10 +29,10 @@ require('./misc/constants.js');
 require('./ui/drawCanvas.js');
 require('./misc/log.js');
 require('./ui/materialsForm.js');
-require('./ui/materialsList.js');
 require('./model/BoardingList.js');
 require('./model/Wall.js');
 require('./model/Pathway.js');
+require('./ui/materialsList.js');
 
 
 // import functions from other local files.
@@ -57,7 +57,7 @@ function submitForm() {
     for (w in setWalls) {
         setWalls[w].setHeight(inputWalls[0].value);
         setWalls[w].setValue(inputWalls[1].value);
-        populateBoard(setWalls[w]);
+        calculateBoard(setWalls[w]);
     }
     createWalls(setWalls);
 }
@@ -90,6 +90,7 @@ function start() {
                     wall = new Wall();
                     wall.update(point2);
                 } else {
+                    pathways.push(path);
                     path = new Pathway();
                     FIRSTCLICK = true;
                 }
