@@ -51,6 +51,16 @@ window.onload = function() {
 }
 
 
+// onclick for clear button it resets screen on canvas
+function reset() {
+    drawBackground();
+    removeForm();
+    path = new Pathway();
+    pathway = path;
+    FIRSTCLICK = true;
+}
+
+
 // onclick handler for materials submit Form
 function submitForm() {
     var inputWalls = document.querySelectorAll('INPUT');

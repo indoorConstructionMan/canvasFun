@@ -111,28 +111,20 @@ var drawBackground = function() {
     // DRAW LINES
     do {
         drawLine({ x: xDelta, y: YUNIT - LINE_PADDING},
-                 { x: xDelta, y: SCREEN_HEIGHT - YUNIT + LINE_PADDING},
+                 { x: xDelta, y: Math.floor((SCREEN_HEIGHT - XUNIT - LINE_PADDING)/YUNIT)*YUNIT},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );
         xDelta += XUNIT;
-    } while (xDelta < SCREEN_WIDTH);
+    } while (xDelta < SCREEN_WIDTH - YUNIT);
 
     //horizontal lines
     do {
         drawLine({ x: XUNIT - LINE_PADDING, y: yDelta},
-                 { x: SCREEN_WIDTH - XUNIT + LINE_PADDING, y: yDelta},
+                 { x: Math.floor(context.canvas.width/XUNIT)*XUNIT + LINE_PADDING, y: yDelta},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );
         yDelta += YUNIT;
-    } while(yDelta < SCREEN_HEIGHT);
-}
-
-
-
-// Reset screen on canvas
-function reset() {
-    drawBackground();
-    removeForm();
+    } while(yDelta < SCREEN_HEIGHT - XUNIT - LINE_PADDING);
 }
