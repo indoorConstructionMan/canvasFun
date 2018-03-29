@@ -91,30 +91,41 @@ var clearScreen = function() {
 
 // Redraws the grid
 var drawBackground = function() {
-    clearScreen();
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
-    var xDelta = UNIT;
-    var yDelta = UNIT;
+
+    var xDelta = UNIT * (window.innerWidth/SCREEN_WIDTH);
+    var yDelta = UNIT * (window.innerHeight/SCREEN_HEIGHT);
+
+    XUNIT = xDelta;
+    YUNIT = yDelta;
+
+    SCREEN_HEIGHT = window.innerHeight;
+    SCREEN_WIDTH = window.innerWidth
+
+    context.canvas.height = SCREEN_HEIGHT;
+    context.canvas.width = SCREEN_WIDTH*CANVAS_RATIO;
+
+    clearScreen();
 
     // DRAW LINES
     do {
-        drawLine({ x: xDelta, y: UNIT},
-                 { x: xDelta, y: SCREEN_HEIGHT - UNIT},
+        drawLine({ x: xDelta, y: YUNIT - LINE_PADDING},
+                 { x: xDelta, y: SCREEN_HEIGHT - YUNIT + LINE_PADDING},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );
-        xDelta += UNIT;
+        xDelta += XUNIT;
     } while (xDelta < SCREEN_WIDTH);
 
     //horizontal lines
     do {
-        drawLine({ x: UNIT, y: yDelta},
-                 { x: SCREEN_WIDTH - UNIT, y: yDelta},
+        drawLine({ x: XUNIT - LINE_PADDING, y: yDelta},
+                 { x: SCREEN_WIDTH - XUNIT + LINE_PADDING, y: yDelta},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );
-        yDelta += UNIT;
+        yDelta += YUNIT;
     } while(yDelta < SCREEN_HEIGHT);
 }
 

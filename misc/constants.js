@@ -25,11 +25,15 @@ SOFTWARE.
 
 // Good ol' globals
 const UNIT = 50;
+var YUNIT = UNIT;
+var XUNIT = UNIT;
 const POINT_OUTER = 8;
 const POINT_INNER = 4;
 const LINE_WIDTH = 10;
-const SCREEN_WIDTH = 1200;
-const SCREEN_HEIGHT = 1100;
+const LINE_PADDING = LINE_WIDTH/2;
+var SCREEN_WIDTH = 400;
+var SCREEN_HEIGHT = 300;
+const CANVAS_RATIO = 2/3;
 const PADDING = 10;
 var FIRSTCLICK = true;
 const BLUEPRINTBLUE = "#d3d3d3";

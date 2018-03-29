@@ -6,9 +6,9 @@
         <link rel="stylesheet" type="text/css" href="./styles.css">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     </head>
-    <body>
+    <body onresize="drawBackground()">
         <div class="flex-container">
-            <canvas id="blueprint" width=1200 height=1100></canvas>
+            <canvas id="blueprint" width=400 height=300></canvas>
             <form class="w3-container" id="inputs" ></form>
             <div id="boardlist">
                 <button class="w3-button w3-hover-red" onclick="reset()" type="button">Clear</button>

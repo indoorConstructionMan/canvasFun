@@ -46,6 +46,7 @@ function require(locationInProject) {
 // run this when dom has loaded.
 window.onload = function() {
     console.log('Welcome to drywall calculator');
+    drawBackground();
     start();
 }
 
@@ -72,8 +73,8 @@ function start() {
     document.getElementById('blueprint').addEventListener('click', function(event){
 
         var point = {
-            x: Math.round(event.clientX/UNIT) * UNIT,
-            y: Math.round(event.clientY/UNIT) * UNIT
+            x: Math.round(event.clientX/XUNIT) * XUNIT,
+            y: Math.round(event.clientY/YUNIT) * YUNIT
         };
 
         switch(FIRSTCLICK) {
