@@ -130,6 +130,7 @@ var drawBackground = function() {
     clearScreen();
     var offset = document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth
     offset += UNIT;
+
     // DRAW GRID LINES
     do {
         drawLine({ x: xDelta, y: YUNIT - LINE_PADDING},
@@ -138,12 +139,12 @@ var drawBackground = function() {
                  LINE_WIDTH
         );
         xDelta += XUNIT;
-    } while (xDelta < SCREEN_WIDTH - offset - YUNIT);
+    } while (xDelta < SCREEN_WIDTH - offset);
 
     //horizontal lines
     do {
         drawLine({ x: XUNIT - LINE_PADDING, y: yDelta},
-                 { x: Math.floor(context.canvas.width/XUNIT)*XUNIT + LINE_PADDING - UNIT, y: yDelta},
+                 { x: Math.min((Math.floor(context.canvas.width/XUNIT)*XUNIT + LINE_PADDING), xDelta + XUNIT), y: yDelta},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );

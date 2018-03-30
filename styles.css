@@ -2,6 +2,7 @@ html, body {
     width:  100%;
     height: 100%;
     margin: 0px;
+    border: 3px solid #000000;
 }
 
 #line-marker {
@@ -17,15 +18,33 @@ html, body {
 }
 
 
-input#height-input {
-    background-color: #F0141E;
-    color: #FFFFFF;
+button {
+    background-color: #FECE00;
+    border: none;
+    color: #FECE00;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 8px 0;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 
-button.w3-button.w3-hover-red {
+button.w3-button {
+    font-family: 'Chicle', serif;
+    font-size: large;
+    background-color: #262228;
+    color: #FECE00;
+    border: 2px solid #FECE00;
+}
+
+
+button.w3-button : hover {
     background-color: #FECE00;
-    margin: 8px 0;
+    color: #262228;
 }
 
 
@@ -44,7 +63,6 @@ button.w3-button.w3-hover-red {
 form#inputs.w3-container {
     background-color: #FECE00;
     align-items: stretch;
-
 }
 
 
@@ -75,6 +93,12 @@ ul#unordered {
     margin: 50px;
 }
 
+
+div#boardlist {
+    border-left: 3px solid #000000;
+}
+
+
 li {
     background: #3399ff;
     margin: 5px;
@@ -88,7 +112,7 @@ li {
 
 canvas {
      background-color: #262228;
-     border: 3px solid #000000;
+     border-right: 3px solid #000000;
 }
 
 

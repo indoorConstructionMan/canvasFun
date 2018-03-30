@@ -22,9 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 // BUG: Points exist outside GRID
-// BUG: right side of grid is buggy again since i played with form div.
 // BUG: click between build form and submit form
-// BUG: dynamic stuff added to form just goes past the form. 
+// BUG: dynamic stuff added to form just goes past the form.
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
@@ -73,7 +72,7 @@ function reset() {
 function submitForm() {
     var inputWalls = document.querySelectorAll('INPUT');
     var setWalls = pathway.getWalls();
-    console.log(setWalls);
+
     for (w in setWalls) {
         setWalls[w].setHeight(inputWalls[0].value);
         setWalls[w].setValue(inputWalls[1].value);
