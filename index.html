@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type="text/javascript" src="./main.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="./styles.css">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Chicle">
     </head>
     <body onresize="drawBackground()">
         <div class="flex-container">
             <canvas id="blueprint" width=400 height=300></canvas>
-            <form class="w3-container" id="inputs" ></form>
+            <form class="w3-container" id="inputs" >
+                <div id='line-marker'>Click blueprint to begin</div>
+            </form>
             <div id="boardlist">
                 <button class="w3-button w3-hover-red" onclick="reset()" type="button">Clear</button>
             </div>

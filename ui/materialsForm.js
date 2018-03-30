@@ -45,10 +45,23 @@ var createFormTitle = () => {
 var createHeightInput = function() {
     document.getElementById('inputs').appendChild(document.createElement('br'));
     var h = document.createElement("INPUT");
+    h.setAttribute("id", "height-input");
     h.setAttribute("type", "text");
-    h.setAttribute("placeholder", "Height");
+    h.setAttribute("placeholder", "Wall Height");
     document.getElementById('inputs').appendChild(h);
 };
+
+
+// Create inputs for the wallsInPath
+var createWallInputs = function(count) {
+
+    for (var i = 0; i < count; i++) {
+        var x = document.createElement("INPUT");
+        x.style.backgroundColor = colors[i];
+        x.setAttribute("type", "text");
+        document.getElementById('inputs').appendChild(x);
+    }
+}
 
 
 // form button to generate supplies
@@ -61,4 +74,13 @@ var createFormButton = function() {
     formButton.setAttribute('onclick', 'submitForm()');
     document.getElementById('inputs').appendChild(formButton);
     document.getElementById('inputs').appendChild(document.createElement('br'));
+};
+
+
+// Creates all the form and attaches to document
+var displayForm = function(count) {
+    createFormTitle();
+    createHeightInput();
+    createWallInputs(count);
+    createFormButton();
 };

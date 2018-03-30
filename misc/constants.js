@@ -22,28 +22,65 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
-
+//https://www.canva.com/learn/website-color-schemes/
 // Good ol' globals
 const UNIT = 50;
-var YUNIT = UNIT;
-var XUNIT = UNIT;
 const POINT_OUTER = 8;
 const POINT_INNER = 4;
 const LINE_WIDTH = 10;
 const LINE_PADDING = LINE_WIDTH/2;
-var SCREEN_WIDTH = 400;
-var SCREEN_HEIGHT = 300;
 const CANVAS_RATIO = 2/3;
 const PADDING = 10;
-const BLUEPRINTBLUE = "#d3d3d3";
+
+// Colors
+const BLUEPRINTBLUE = "#262228";
+
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";
+const RED = "#E73C18";
+const GREEN = "#07fc55";
+const PINK = "#fc07ba";
+const OFFORANGE = '#E77018';
+const DARKRED = '#BB3B1F';
+const FORRESTGREEN = '#51BB1F';
+const TEAL = "#1F9FBB";
+const PURPLE = '#891FBB';
+const LIGHTORANGE = '#E7A418';
+const OFFYELLOW = '#E7D718';
+const LIME = '#8FE718';
+const OFFGREEN = '#C3E718';
 
+const colors = [
+    LIME,
+    DARKRED,
+    FORRESTGREEN,
+    PURPLE,
+    OFFGREEN,
+    OFFORANGE,
+    TEAL,
+    PINK,
+    LIGHTORANGE,
+    GREEN,
+    RED,
+    BLACK,
+    WHITE,
+    BLUEPRINTBLUE
+];
+
+// CANVAS SCREEN DIMENSIONS
+var SCREEN_WIDTH = 400;
+var SCREEN_HEIGHT = 300;
+
+// GRID DISTANCE
+var YUNIT = UNIT;
+var XUNIT = UNIT;
+
+// single pathway, and the set
 var pathway;
 var pathways = [];
 
 var symbol = [
-    'x',
+    'X',
     'y',
     'z',
     'a',

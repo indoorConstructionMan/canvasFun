@@ -50,14 +50,33 @@ var drawDot = function(p, styling, radius) {
 };
 
 
-// called in main logic, handles what to draw
-var drawWall = function(wall) {
+// draw wall selecting color
+var drawWallWithColor = function(wall, color) {
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
 
         drawDot(wall.getPoint2(), BLUEPRINTBLUE, POINT_OUTER);
-        drawLine(wall.getPoint1(), wall.getPoint2(), BLACK, LINE_WIDTH);
-        drawDot(wall.getPoint2(), BLACK, POINT_INNER);
+        drawLine(wall.getPoint1(), wall.getPoint2(), color, LINE_WIDTH+5);
+        drawDot(wall.getPoint2(), color, POINT_INNER);
+};
+
+
+// draw entire path randomizing color
+var drawPath = (path) => {
+    var canvas = document.getElementById('blueprint');
+    var context = canvas.getContext('2d');
+    var i = 0;
+    for (wall in path) {
+        drawWallWithColor(path[wall], colors[i]);
+        drawDot(path[wall].getPoint1(), WHITE, 8);
+        i += 1;
+    }
+};
+
+
+// called in main logic, handles what to draw
+var drawWall = function(wall) {
+    drawWallWithColor(wall, BLACK);
 };
 
 
@@ -76,7 +95,8 @@ var drawText = function(xpos, ypos, message) {
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
 
-    context.font = "30px Arial";
+    context.font = "40px Calibri";
+    context.fillStyle = "blue";
     context.strokeText(message, xpos, ypos);
 };
 
@@ -107,24 +127,25 @@ var drawBackground = function() {
     context.canvas.width = Math.round(SCREEN_WIDTH*CANVAS_RATIO);
 
     clearScreen();
-
-    // DRAW LINES
+    var offset = document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth
+    offset += UNIT;
+    // DRAW GRID LINES
     do {
         drawLine({ x: xDelta, y: YUNIT - LINE_PADDING},
-                 { x: xDelta, y: Math.floor((SCREEN_HEIGHT - XUNIT - LINE_PADDING)/YUNIT)*YUNIT},
+                 { x: xDelta, y: Math.floor((SCREEN_HEIGHT - XUNIT - LINE_PADDING)/YUNIT)*YUNIT + YUNIT},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );
         xDelta += XUNIT;
-    } while (xDelta < SCREEN_WIDTH - YUNIT);
+    } while (xDelta < SCREEN_WIDTH - offset - YUNIT);
 
     //horizontal lines
     do {
         drawLine({ x: XUNIT - LINE_PADDING, y: yDelta},
-                 { x: Math.floor(context.canvas.width/XUNIT)*XUNIT + LINE_PADDING, y: yDelta},
+                 { x: Math.floor(context.canvas.width/XUNIT)*XUNIT + LINE_PADDING - UNIT, y: yDelta},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );
         yDelta += YUNIT;
-    } while(yDelta < SCREEN_HEIGHT - XUNIT - LINE_PADDING);
+    } while(yDelta < SCREEN_HEIGHT - LINE_PADDING);
 }

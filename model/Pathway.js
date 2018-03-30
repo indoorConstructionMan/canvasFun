@@ -47,9 +47,12 @@ Pathway.prototype.checkAndBuildPathForm = function() {
 
 
 // check if path is fully drawn
+// needs to handle clicking in same spot,
 Pathway.prototype.checkComplete = function() {
     var current = this.path.walls[this.path.walls.length-1];
-    if (current.getPoint1().x == current.getPoint2().x && current.getPoint1().y == current.getPoint2().y) {
+    console.log(this.path.walls.length);
+
+    if (this.path.walls.length > 1 && current.getPoint1().x == current.getPoint2().x && current.getPoint1().y == current.getPoint2().y) {
         return true;
     }
     return false;
@@ -105,49 +108,8 @@ Pathway.prototype.drawSetOfLines = function() {
 };
 
 
-// create elements for user to input values
-Pathway.prototype.createInputFields = function(count) {
-    createFormTitle();
-    createHeightInput();
-    for (var i = 0; i < count; i++) {
-        var x = document.createElement("INPUT");
-        x.setAttribute("type", "text");
-        x.setAttribute("placeholder", symbol[i]);
-        document.getElementById('inputs').appendChild(x);
-    }
-    createFormButton();
-};
-
-
 // need to clean this up...
 Pathway.prototype.buildPathForm = function() {
-
     this.drawSetOfLines();
-    var wallsInPath = this.getWalls();
-    var len = wallsInPath.length;
-    var diffX = 0;
-    var diffY = 0;
-    for (var i = 0; i < len-1; i++) {
-        var xNew = 0,
-            yNew = 0,
-            point1 = wallsInPath[i].getPoint1(),
-            point2 = wallsInPath[i].getPoint2();
-
-        diffX = point1.x - point2.x;
-        diffY = point1.y - point2.y;
-
-        if (!diffY) {
-            xNew = point1.x - Math.round(diffX/2);
-            yNew = point1.y + 35;
-        } else if (!diffX) {
-            yNew = point1.y - Math.round(diffY/2);
-            xNew = point1.x + 20;
-        } else {
-            xNew = point1.x - Math.round(diffX/2) + PADDING;
-            yNew = point1.y - Math.round(diffY/2) - PADDING;
-        }
-
-        drawText(xNew, yNew, symbol[i]);
-    }
-    this.createInputFields(len-1);
+    displayForm(this.getWalls().length-1);
 };

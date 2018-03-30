@@ -21,12 +21,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-// BUG: letters need position adjustment on angled lines.
-// BUG: It won't scale when clicking maximize window.
-// BUG: Drawing paths is very buggy, Path closes when path is not complete
 // BUG: Clear button clears elements, but remembers and continues path.
 // BUG: If form gets too large, it litearlly streches the canvas
-// BUG: Only creates one wall for multi point wall if false positive
+// BUG: Points exist outside GRID
+// BUG: 
+
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
@@ -46,12 +45,58 @@ function require(locationInProject) {
 }
 
 
+
 // run this when dom has loaded.
 window.onload = function() {
     console.log('Welcome to drywall calculator');
     drawBackground();
     start();
 }
+
+
+$(document).ready(function() {
+    $(window).resize(function() {
+        var canvas = document.getElementById('blueprint'),
+            context = canvas.getContext('2d');
+
+        var xDelta = UNIT * (window.innerWidth/SCREEN_WIDTH);
+        var yDelta = UNIT * (window.innerHeight/SCREEN_HEIGHT);
+
+        XUNIT = xDelta;
+        YUNIT = yDelta;
+
+        SCREEN_HEIGHT = Math.round(window.innerHeight);
+        SCREEN_WIDTH = Math.round(window.innerWidth);
+
+        context.canvas.height = SCREEN_HEIGHT;
+        context.canvas.width = Math.round(SCREEN_WIDTH*CANVAS_RATIO);
+
+        clearScreen();
+
+        var offset = document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth
+        offset += UNIT;
+        // DRAW GRID LINES
+        do {
+            drawLine({ x: xDelta, y: YUNIT - LINE_PADDING},
+                     { x: xDelta, y: Math.floor((SCREEN_HEIGHT - XUNIT - LINE_PADDING)/YUNIT)*YUNIT + YUNIT},
+                     BLUEPRINTBLUE,
+                     LINE_WIDTH
+            );
+            xDelta += XUNIT;
+        } while (xDelta < SCREEN_WIDTH - offset - YUNIT);
+
+        //horizontal lines
+        do {
+            drawLine({ x: XUNIT - LINE_PADDING, y: yDelta},
+                     { x: Math.floor(context.canvas.width/XUNIT)*XUNIT + LINE_PADDING - UNIT, y: yDelta},
+                     BLUEPRINTBLUE,
+                     LINE_WIDTH
+            );
+            yDelta += YUNIT;
+        } while(yDelta < SCREEN_HEIGHT - LINE_PADDING);
+    }
+);
+});
 
 
 // onclick for clear button it resets screen on canvas
@@ -94,12 +139,14 @@ function start() {
             wall.init(point);
         } else {
             wall.setAndDraw(point);
+            // paint random wall
             if(!path.addWallAndBuildPathForm(wall)) {
                 var point2 = wall.getPoint2();
                 wall = new Wall();
                 wall.update(point2);
             } else {
                 pathways.push(path);
+                drawPath(path.getWalls());
                 path = new Pathway();
                 click = 0;
             }
