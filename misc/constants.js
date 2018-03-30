@@ -77,3 +77,4 @@ var XUNIT = UNIT;
 
 // single pathways, and the set
 var pathways = [];
+var pathway;

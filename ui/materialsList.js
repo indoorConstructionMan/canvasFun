@@ -186,22 +186,9 @@ function calculateBoard(wall) {
     // find out if we are on the last one. If so, skip it
     if (w.p1.x == w.p2.x && w.p1.y == w.p2.y && w.p1.x != 0) {
         // do something useful
+        findBoard(wall);
     } else {
         findBoard(wall);
-    }
-}
-
-
-// gets all other board required.
-function populateBoard(wall) {
-    var h = wall.height;
-    switch (h) {
-        case '9':
-            getTwelves54(wall);
-            break;
-        default:
-            getBoard(wall);
-            break;
     }
 }
 

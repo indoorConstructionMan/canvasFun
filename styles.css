@@ -17,7 +17,7 @@ html, body {
 }
 
 
-#height-input {
+input#height-input {
     background-color: #F0141E;
     color: #FFFFFF;
 }
@@ -65,6 +65,20 @@ form#inputs.w3-container {
     font-size: 30px;
 }
 
+ul {
+    list-style-type: none;
+    background: #262228;
+    padding: 10px;
+}
+
+ul#unordered {
+    margin: 50px;
+}
+
+li {
+    background: #3399ff;
+    margin: 5px;
+}
 
 #formButton {
     width: 100%;

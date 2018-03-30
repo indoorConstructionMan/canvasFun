@@ -21,10 +21,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-// BUG: Clear button clears elements, but remembers and continues path.
-// BUG: If form gets too large, it litearlly streches the canvas
 // BUG: Points exist outside GRID
-// BUG: Form is really ugly, colors don't work with new scheme
+// BUG: right side of grid is buggy again since i played with form div.
+// BUG: click between build form and submit form
+// BUG: dynamic stuff added to form just goes past the form. 
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
@@ -73,11 +73,13 @@ function reset() {
 function submitForm() {
     var inputWalls = document.querySelectorAll('INPUT');
     var setWalls = pathway.getWalls();
+    console.log(setWalls);
     for (w in setWalls) {
         setWalls[w].setHeight(inputWalls[0].value);
         setWalls[w].setValue(inputWalls[1].value);
         calculateBoard(setWalls[w]);
     }
+    removeForm();
     createWalls(setWalls);
 }
 
@@ -86,6 +88,7 @@ function submitForm() {
 function start() {
     var path = new Pathway();
     var wall = new Wall();
+    pathway = path;
     var click = 0;
 
     // Grab canvas tag add a listen
@@ -100,6 +103,7 @@ function start() {
         if (!click) {
             click = 1;
             path = new Pathway();
+            pathway = path;
             wall = new Wall();
             wall.init(point);
         } else {
@@ -108,6 +112,7 @@ function start() {
                 var point2 = wall.getPoint2();
                 wall = new Wall();
                 wall.update(point2);
+                console.log(path);
             } else {
                 pathways.push(path);
                 drawPath(path.getWalls());
