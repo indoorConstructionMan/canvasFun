@@ -33,7 +33,8 @@ const CANVAS_RATIO = 2/3;
 const PADDING = 10;
 
 // Colors
-const BLUEPRINTBLUE = "#262228";
+//const BLUEPRINTBLUE = "#262228";
+const BLUEPRINTBLUE = "#0375B4";
 
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";
@@ -51,16 +52,15 @@ const LIME = '#8FE718';
 const OFFGREEN = '#C3E718';
 
 const colors = [
-    LIME,
-    DARKRED,
     FORRESTGREEN,
     PURPLE,
-    OFFGREEN,
     OFFORANGE,
     TEAL,
+    DARKRED,
     PINK,
     LIGHTORANGE,
     GREEN,
+    OFFGREEN,
     RED,
     BLACK,
     WHITE,
@@ -75,24 +75,5 @@ var SCREEN_HEIGHT = 300;
 var YUNIT = UNIT;
 var XUNIT = UNIT;
 
-// single pathway, and the set
-var pathway;
+// single pathways, and the set
 var pathways = [];
-
-var symbol = [
-    'X',
-    'y',
-    'z',
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l'
-];

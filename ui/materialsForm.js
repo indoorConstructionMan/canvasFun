@@ -46,6 +46,7 @@ var createHeightInput = function() {
     document.getElementById('inputs').appendChild(document.createElement('br'));
     var h = document.createElement("INPUT");
     h.setAttribute("id", "height-input");
+    //h.setAttribute("class","w3-input w3-border w3-round-large");
     h.setAttribute("type", "text");
     h.setAttribute("placeholder", "Wall Height");
     document.getElementById('inputs').appendChild(h);
@@ -62,7 +63,6 @@ var createWallInputs = function(count) {
         document.getElementById('inputs').appendChild(x);
     }
 }
-
 
 // form button to generate supplies
 var createFormButton = function() {

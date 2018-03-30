@@ -55,7 +55,7 @@ var drawWallWithColor = function(wall, color) {
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
 
-        drawDot(wall.getPoint2(), BLUEPRINTBLUE, POINT_OUTER);
+        drawDot(wall.getPoint2(), "#262228", POINT_OUTER);
         drawLine(wall.getPoint1(), wall.getPoint2(), color, LINE_WIDTH+5);
         drawDot(wall.getPoint2(), color, POINT_INNER);
 };
@@ -68,7 +68,8 @@ var drawPath = (path) => {
     var i = 0;
     for (wall in path) {
         drawWallWithColor(path[wall], colors[i]);
-        drawDot(path[wall].getPoint1(), WHITE, 8);
+        drawDot(path[wall].getPoint1(), "#FECE00", 8);
+        drawDot(path[wall].getPoint1(), "#262228", 4);
         i += 1;
     }
 };
@@ -76,7 +77,7 @@ var drawPath = (path) => {
 
 // called in main logic, handles what to draw
 var drawWall = function(wall) {
-    drawWallWithColor(wall, BLACK);
+    drawWallWithColor(wall, "#FECE00");
 };
 
 
@@ -85,8 +86,8 @@ var drawPoint = function(p1) {
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
 
-        drawDot(p1, BLUEPRINTBLUE, POINT_OUTER);
-        drawDot(p1, BLACK, POINT_INNER);
+        drawDot(p1, "#FECE00", POINT_OUTER);
+        drawDot(p1, "#262228", POINT_INNER-2);
 };
 
 

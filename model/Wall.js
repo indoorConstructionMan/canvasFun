@@ -97,7 +97,7 @@ Wall.prototype.getHeight = function() {
 //
 //-------------------------------------------
 // init
-Wall.prototype.init = function(point, ls) {
+Wall.prototype.init = function(point) {
     this.setPoint1(point);
     drawPoint(this.getPoint1());
     this.attachList(new BoardingList());
@@ -115,6 +115,7 @@ Wall.prototype.update = function(point) {
 Wall.prototype.setAndDraw = function(point) {
     this.setPoint2(point);
     drawWall(this);
+    drawPoint(this.getPoint1());
 };
 
 

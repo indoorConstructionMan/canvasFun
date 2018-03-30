@@ -14,7 +14,6 @@ html, body {
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
-    background-color:
 }
 
 
@@ -32,11 +31,20 @@ button.w3-button.w3-hover-red {
 
 .flex-container {
     display: flex;
+    display: -webkit-flex;
     flex-wrap: nowrap;
     flex-grow: 0;
     flex-shrink: 0;
     flex-basis: 50%;
+    height: 100%;
     background-color: #262228;
+}
+
+
+form#inputs.w3-container {
+    background-color: #FECE00;
+    align-items: stretch;
+
 }
 
 
@@ -57,19 +65,15 @@ button.w3-button.w3-hover-red {
     font-size: 30px;
 }
 
-form#inputs.w3-container {
-    background-color: #FECE00;
-}
-
 
 #formButton {
     width: 100%;
-    flex-grow: 2;
+    flex-grow: 0;
 }
 
 
 canvas {
-     background-color: #0375B4;
+     background-color: #262228;
      border: 3px solid #000000;
 }
 
