@@ -46,6 +46,16 @@ Pathway.prototype.checkAndBuildPathForm = function() {
 };
 
 
+// check if path is fully drawn
+Pathway.prototype.checkComplete = function() {
+    var current = this.path.walls[this.path.walls.length-1];
+    if (current.getPoint1().x == current.getPoint2().x && current.getPoint1().y == current.getPoint2().y) {
+        return true;
+    }
+    return false;
+};
+
+
 // set closed condition
 Pathway.prototype.setClosed = function(state) {
     this.path.closed = state;
@@ -77,16 +87,6 @@ Pathway.prototype.getFullSqft = function() {
             sum += this.path.walls[wall].getList().getSqft();
         }
         return sum;
-};
-
-
-// check if path is fully drawn
-Pathway.prototype.checkComplete = function() {
-    var current = this.path.walls[this.path.walls.length-1];
-    if (current.getPoint1().x == current.getPoint2().x && current.getPoint2().y == current.getPoint2().y) {
-        return true;
-    }
-    return false;
 };
 
 

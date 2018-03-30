@@ -100,11 +100,11 @@ var drawBackground = function() {
     XUNIT = xDelta;
     YUNIT = yDelta;
 
-    SCREEN_HEIGHT = window.innerHeight;
-    SCREEN_WIDTH = window.innerWidth
+    SCREEN_HEIGHT = Math.round(window.innerHeight);
+    SCREEN_WIDTH = Math.round(window.innerWidth);
 
     context.canvas.height = SCREEN_HEIGHT;
-    context.canvas.width = SCREEN_WIDTH*CANVAS_RATIO;
+    context.canvas.width = Math.round(SCREEN_WIDTH*CANVAS_RATIO);
 
     clearScreen();
 

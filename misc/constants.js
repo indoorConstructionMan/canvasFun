@@ -35,12 +35,10 @@ var SCREEN_WIDTH = 400;
 var SCREEN_HEIGHT = 300;
 const CANVAS_RATIO = 2/3;
 const PADDING = 10;
-var FIRSTCLICK = true;
 const BLUEPRINTBLUE = "#d3d3d3";
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";
 
-var wall;
 var pathway;
 var pathways = [];
 

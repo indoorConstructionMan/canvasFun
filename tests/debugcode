@@ -1,0 +1,9 @@
+console.log("Check complete");
+var p1x = current.getPoint1().x;
+var p2x = current.getPoint2().x;
+var p1y = current.getPoint1().y;
+var p2y = current.getPoint2().y;
+console.log(p1x);
+console.log(p1y);
+console.log(p2x);
+console.log(p2y);

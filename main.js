@@ -22,8 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 // BUG: letters need position adjustment on angled lines.
-// BUG: scaling is an issue.
+// BUG: It won't scale when clicking maximize window.
+// BUG: Drawing paths is very buggy, Path closes when path is not complete
 // BUG: Clear button clears elements, but remembers and continues path.
+// BUG: If form gets too large, it litearlly streches the canvas
+// BUG: Only creates one wall for multi point wall if false positive
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
@@ -53,11 +56,8 @@ window.onload = function() {
 
 // onclick for clear button it resets screen on canvas
 function reset() {
-    drawBackground();
     removeForm();
-    path = new Pathway();
-    pathway = path;
-    FIRSTCLICK = true;
+    drawBackground();
 }
 
 
@@ -79,35 +79,31 @@ function start() {
     var path = new Pathway();
     var wall = new Wall();
     pathway = path;
+    var click = 0;
+
     // Grab canvas tag add a listen
     document.getElementById('blueprint').addEventListener('click', function(event){
 
         var point = {
-            x: Math.round(event.clientX/XUNIT) * XUNIT,
-            y: Math.round(event.clientY/YUNIT) * YUNIT
+            x: Math.round(Math.round(event.clientX/XUNIT) * XUNIT),
+            y: Math.round(Math.round(event.clientY/YUNIT) * YUNIT)
         };
 
-        switch(FIRSTCLICK) {
-            // First click of a path
-            case true:
-                FIRSTCLICK = false;
-                wall.init(point);
-                break;
-            // not the first click in a path
-            case false:
-                wall.setAndDraw(point);
-                if(!path.addWallAndBuildPathForm(wall)) {
-                    var point2 = wall.getPoint2();
-                    wall = new Wall();
-                    wall.update(point2);
-                } else {
-                    pathways.push(path);
-                    path = new Pathway();
-                    FIRSTCLICK = true;
-                }
-                break;
+        if (!click) {
+            click = 1;
+            wall.init(point);
+        } else {
+            wall.setAndDraw(point);
+            if(!path.addWallAndBuildPathForm(wall)) {
+                var point2 = wall.getPoint2();
+                wall = new Wall();
+                wall.update(point2);
+            } else {
+                pathways.push(path);
+                path = new Pathway();
+                click = 0;
+            }
         }
-
 
     }, false);
 

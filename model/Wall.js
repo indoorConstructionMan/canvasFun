@@ -23,7 +23,6 @@ SOFTWARE.*/
 
 function Wall() {
     this.wall = {
-        firstPoint: false,
         value: 0,
         p1: {x:0, y:0},
         p2: {x:0, y:0},
@@ -32,6 +31,71 @@ function Wall() {
 }
 
 
+// Set value of wall (length)
+Wall.prototype.setValue = function(val) {
+    this.wall.value = val;
+};
+
+
+// Get value of wall (length)
+Wall.prototype.getValue = function(val) {
+    return this.wall.value;
+};
+
+
+// set Points 1,2 respectively
+Wall.prototype.setPoints = function(p1, p2) {
+    this.wall.p1 = p1;
+    this.wall.p2 = p2;
+};
+
+
+// get Points 1,2 respectively
+Wall.prototype.getPoints = function(p1, p2) {
+    return [this.wall.p1, this.wall.p2];
+};
+
+
+// set point1 of the wall
+Wall.prototype.setPoint1 = function(pt) {
+    this.wall.p1 = pt;
+};
+
+
+// get point 1 of wall
+Wall.prototype.getPoint1 = function() {
+    return this.wall.p1;
+};
+
+
+// set point 2 of wall
+Wall.prototype.setPoint2 = function(pt) {
+    this.wall.p2 = pt;
+};
+
+
+// gets point 2 of wall
+Wall.prototype.getPoint2 = function() {
+    return this.wall.p2
+};
+
+
+// set height of wall
+Wall.prototype.setHeight = function(ht) {
+    this.wall.height = ht;
+};
+
+
+// get height of wall
+Wall.prototype.getHeight = function() {
+    return this.wall.height;
+};
+
+// set points(p1, p2)
+// get points(p1, p2)
+
+//
+//-------------------------------------------
 // init
 Wall.prototype.init = function(point, ls) {
     this.setPoint1(point);
@@ -54,16 +118,6 @@ Wall.prototype.setAndDraw = function(point) {
 };
 
 
-// set height
-Wall.prototype.setHeight = function(ht) {
-    this.wall.height = ht;
-};
-
-
-// get height
-Wall.prototype.getHeight = function() {
-    return this.wall.height;
-};
 
 
 // get wall
@@ -76,18 +130,6 @@ Wall.prototype.getWall = function() {
 Wall.prototype.swapAndZeroPoint = function() {
     this.wall.p1 = this.wall.p2;
     this.wall.p2 = {x:0, y:0};
-};
-
-
-// set flag for something idk anymore
-Wall.prototype.setFlag = function(state) {
-    this.wall.firstPoint = state;
-};
-
-
-// get flag for something idk anymore
-Wall.prototype.getFlag = function() {
-    return this.wall.firstPoint;
 };
 
 
@@ -112,42 +154,6 @@ Wall.prototype.attachList = function(material) {
 // attach a boardinglist to current wall
 Wall.prototype.listExist = function(material) {
     return this.boardlist != null;
-};
-
-
-// set points the user is drwaing out.
-Wall.prototype.setPoint1 = function(pt) {
-    this.setFlag(true);
-    this.wall.p1 = pt;
-};
-
-
-// set points the user is drwaing out.
-Wall.prototype.setPoint2 = function(pt) {
-    this.setFlag(false);
-    this.wall.p2 = pt;
-};
-
-
-// set points the user is drwaing out.
-Wall.prototype.getPoint2 = function() {
-    return this.wall.p2
-};
-
-
-// set points the user is drwaing out.
-Wall.prototype.getPoint1 = function() {
-    return this.wall.p1;
-};
-
-
-Wall.prototype.setValue = function(val) {
-    this.wall.value = val;
-};
-
-
-Wall.prototype.getValue = function(val) {
-    return this.wall.value;
 };
 
 
