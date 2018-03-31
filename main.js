@@ -22,10 +22,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 // BUG: Points exist outside GRID
-// BUG: click between build form and submit form
-// BUG: dynamic stuff added to form just goes past the form.
-// BUG: Materials list has odd padding on the left side
-// BUG:
+// BUG: Points, walls, and paths are sometimes not redrawn on resize?!?!
+// BUG: If screen size changes, it will still draw to those specific coordinates,
+// BUG: dynamic stuff added to form just goes past the form container.
+// BUG: When i add new wall to same project, the materials list doesn't disappear
+// BUG: sometimes redraws the incorrect color when resizing
+// BUG: chunks don't work
+// BUG: board doesn't calculate correctly
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
@@ -58,6 +61,53 @@ window.onload = function() {
 $(document).ready(function() {
         $(window).resize(function() {
             drawBackground();
+            // wall can't be accessed inside switch case?!?!
+            var temp = 0;
+
+            if(click) {
+                var temp = wall.getPoints()[0];
+            }
+            console.log(pathStart);
+            console.log(wallHolder);
+
+            for (p in pathways) {
+                drawPath(pathways[p].getWalls());
+            }
+
+            for (w in wallHolder) {
+                if (w == wallHolder.length - 1) {
+                    wallHolder[w].setPoint2(wallHolder[0].getPoint1());
+                    wallHolder[w].setPoint1(pathStart);
+                    drawWall(wallHolder[w]);
+                    drawPoint(wallHolder[0].getPoint1());
+                    drawPoint(pathStart);
+                } else {
+                    drawWall(wallHolder[w]);
+                }
+            }
+
+            switch(click){
+                case 1:
+                    drawPoint(wall.getPoint1());
+                    break;
+                case 2:
+                    if (pathways.length) {
+                        var x = new Wall();
+                        x.setPoint1(point1);
+                        x.setPoint2(temp);
+                        wall = x;
+                    } else {
+                        wall.setPoint2(wall.getPoint1());
+                        wall.setPoint1(point1);
+                    }
+
+                    drawWall(wall);
+                    drawPoint(point1);
+                    wall.update(wall.getPoint2());
+                    break;
+                default:
+                    break;
+            }
         }
     );
 });
@@ -68,7 +118,13 @@ function reset() {
     removeForm();
     addApplicationTitle();
     drawBackground();
+    if (click == 2){
+        path = new Pathway();
+        wall = new Wall();
+        pathway = path;
+    }
     click = 0;
+
 }
 
 
@@ -90,9 +146,9 @@ function submitForm() {
 // main entry point of the program
 function start() {
     var path = new Pathway();
-    var wall = new Wall();
+    wall = new Wall();
     pathway = path;
-    var click = 0;
+    click = 0;
 
     // Grab canvas tag add a listen
     document.getElementById('blueprint').addEventListener('click', function(event){
@@ -102,26 +158,33 @@ function start() {
             y: Math.round(Math.round(event.clientY/YUNIT) * YUNIT)
         };
 
-
         if (!click) {
+            wallHolder = [];
             click = 1;
             path = new Pathway();
             pathway = path;
             wall = new Wall();
             wall.init(point);
+            pathStart = point;
             removeApplicationTitle();
         } else {
             wall.setAndDraw(point);
             if(!path.addWallAndBuildPathForm(wall)) {
+                point1 = wall.getPoint1();
                 var point2 = wall.getPoint2();
                 wall = new Wall();
                 wall.update(point2);
+                click = 2;
+                wallHolder.push(wall);
             } else {
                 pathways.push(path);
                 drawPath(path.getWalls());
                 path = new Pathway();
                 click = 0;
             }
+
+
+            console.log(click);
         }
 
     }, false);

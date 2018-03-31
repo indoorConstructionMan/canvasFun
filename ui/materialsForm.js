@@ -48,7 +48,7 @@ var createHeightInput = function() {
     var h = document.createElement("INPUT");
     h.setAttribute("id", "height-input");
     h.setAttribute("type", "text");
-    h.setAttribute("placeholder", "Wall Height");
+    h.setAttribute("placeholder", "Height");
     document.getElementById('inputs').appendChild(h);
 };
 

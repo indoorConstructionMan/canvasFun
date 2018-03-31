@@ -50,19 +50,18 @@ const LIGHTORANGE = '#E7A418';
 const OFFYELLOW = '#E7D718';
 const LIME = '#8FE718';
 const OFFGREEN = '#C3E718';
+const GREENKINDA = '#66ffff';
 
 const colors = [
-    FORRESTGREEN,
+    GREEN,
     PURPLE,
-    OFFORANGE,
+    PINK,
     TEAL,
     DARKRED,
-    PINK,
+    LIME,
     LIGHTORANGE,
-    GREEN,
-    OFFGREEN,
+    GREENKINDA,
     RED,
-    BLACK,
     WHITE,
     BLUEPRINTBLUE
 ];
@@ -78,3 +77,8 @@ var XUNIT = UNIT;
 // single pathways, and the set
 var pathways = [];
 var pathway;
+var wall;
+var click;
+var point1;
+var wallHolder;
+var pathStart = 0;

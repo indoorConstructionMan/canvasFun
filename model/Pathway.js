@@ -50,7 +50,6 @@ Pathway.prototype.checkAndBuildPathForm = function() {
 // needs to handle clicking in same spot,
 Pathway.prototype.checkComplete = function() {
     var current = this.path.walls[this.path.walls.length-1];
-    console.log(this.path.walls.length);
 
     if (this.path.walls.length > 1 && current.getPoint1().x == current.getPoint2().x && current.getPoint1().y == current.getPoint2().y) {
         return true;

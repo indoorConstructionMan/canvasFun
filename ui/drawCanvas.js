@@ -144,7 +144,7 @@ var drawBackground = function() {
     //horizontal lines
     do {
         drawLine({ x: XUNIT - LINE_PADDING, y: yDelta},
-                 { x: Math.min((Math.floor(context.canvas.width/XUNIT)*XUNIT + LINE_PADDING), xDelta + XUNIT), y: yDelta},
+                 { x: xDelta - XUNIT + LINE_PADDING, y: yDelta},
                  BLUEPRINTBLUE,
                  LINE_WIDTH
         );
