@@ -197,6 +197,11 @@ function calculateBoard(wall) {
 function createWalls(w) {
     var ul = document.createElement('UL');
     ul.setAttribute('id', 'unordered');
+    var nameContainer = document.createElement('H1');
+    nameContainer.setAttribute('id', 'line-marker');
+    var name = document.createTextNode('Materials List: ');
+    nameContainer.appendChild(name);
+    document.getElementById('inputs').appendChild(nameContainer);
     document.getElementById('inputs').appendChild(ul);
     var boardNames = ["4' x 8'", "4' x 8' Aqua", "4' x 9'", "4' x 10'", "4' x 10' Aqua", "4' x 12'", "4' x 12 CD'", "54 x 12'", "Waste "];
     var i = 0;

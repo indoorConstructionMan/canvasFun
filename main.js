@@ -24,6 +24,8 @@ SOFTWARE.*/
 // BUG: Points exist outside GRID
 // BUG: click between build form and submit form
 // BUG: dynamic stuff added to form just goes past the form.
+// BUG: Materials list has odd padding on the left side
+// BUG:
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
@@ -47,6 +49,7 @@ function require(locationInProject) {
 // run this when dom has loaded.
 window.onload = function() {
     console.log('Welcome to drywall calculator');
+    addApplicationTitle();
     drawBackground();
     start();
 }
@@ -63,6 +66,7 @@ $(document).ready(function() {
 // onclick for clear button it resets screen on canvas
 function reset() {
     removeForm();
+    addApplicationTitle();
     drawBackground();
     click = 0;
 }
@@ -105,13 +109,13 @@ function start() {
             pathway = path;
             wall = new Wall();
             wall.init(point);
+            removeApplicationTitle();
         } else {
             wall.setAndDraw(point);
             if(!path.addWallAndBuildPathForm(wall)) {
                 var point2 = wall.getPoint2();
                 wall = new Wall();
                 wall.update(point2);
-                console.log(path);
             } else {
                 pathways.push(path);
                 drawPath(path.getWalls());

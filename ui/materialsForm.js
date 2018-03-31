@@ -36,6 +36,7 @@ function removeForm() {
 var createFormTitle = () => {
     var title = document.createElement('H');
     var text = document.createTextNode("Please Input Measurements");
+    title.setAttribute('id', 'line-marker');
     title.appendChild(text);
     document.getElementById('inputs').appendChild(title);
 };
@@ -46,19 +47,19 @@ var createHeightInput = function() {
     document.getElementById('inputs').appendChild(document.createElement('br'));
     var h = document.createElement("INPUT");
     h.setAttribute("id", "height-input");
-    //h.setAttribute("class","w3-input w3-border w3-round-large");
     h.setAttribute("type", "text");
     h.setAttribute("placeholder", "Wall Height");
     document.getElementById('inputs').appendChild(h);
 };
 
 
+
 // Create inputs for the wallsInPath
 var createWallInputs = function(count) {
-
     for (var i = 0; i < count; i++) {
         var x = document.createElement("INPUT");
         x.style.backgroundColor = colors[i];
+        x.setAttribute("id", "measurementInputs");
         x.setAttribute("type", "text");
         document.getElementById('inputs').appendChild(x);
     }
@@ -70,10 +71,28 @@ var createFormButton = function() {
     formButton.innerHTML = "Calculate materials";
     formButton.setAttribute('id', 'formButton');
     formButton.setAttribute('type', 'button');
-    formButton.setAttribute('class', 'w3-button w3-blue');
+    formButton.setAttribute('class', 'w3-button');
     formButton.setAttribute('onclick', 'submitForm()');
     document.getElementById('inputs').appendChild(formButton);
     document.getElementById('inputs').appendChild(document.createElement('br'));
+};
+
+
+// inserts the application notification
+var addApplicationTitle = function() {
+    var form = document.getElementsByClassName('w3-container');
+    var title = document.createElement('H1');
+    var titleTextNode = document.createTextNode('Click blueprint to begin');
+    title.setAttribute('id', 'line-marker');
+    title.appendChild(titleTextNode);
+    form[0].appendChild(title);
+};
+
+
+// remove the application notification
+var removeApplicationTitle = function() {
+    var title = document.getElementById("line-marker");
+    title.parentNode.removeChild(title);
 };
 
 
