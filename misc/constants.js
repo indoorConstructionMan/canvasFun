@@ -74,6 +74,14 @@ var SCREEN_HEIGHT = 300;
 var YUNIT = UNIT;
 var XUNIT = UNIT;
 
+
+var YMIN = YUNIT - LINE_PADDING;
+var YMAX = Math.floor((SCREEN_HEIGHT - XUNIT - LINE_PADDING)/YUNIT)*YUNIT + YUNIT
+
+var XMIN = XUNIT - LINE_PADDING;
+var XMAX = YMAX;
+
+
 // single pathways, and the set
 var pathways = [];
 var pathway;

@@ -141,6 +141,7 @@ var drawBackground = function() {
         xDelta += XUNIT;
     } while (xDelta < SCREEN_WIDTH - offset);
 
+
     //horizontal lines
     do {
         drawLine({ x: XUNIT - LINE_PADDING, y: yDelta},

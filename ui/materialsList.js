@@ -65,6 +65,38 @@ function positive(s) {
 }
 
 
+
+function calc(wall) {
+    var materialList = wall['boardlist'];
+    var wallData = wall['wall'];
+
+    // 8 feet only
+    var numberOfRows = 2;
+    var waste = [];
+
+    var sections = new Array(numberOfRows);
+
+    // assigning length to segments
+    for (var i = 0; i < sections.length; i++) {
+        // if odd, make positive
+        if (i%2) {
+            sections[i] = 1*parseInt(wall.getData());
+        } else {
+            sections[i] = -1*parseInt(wall.getData());
+        }
+
+    }
+
+    var pieces = {
+        start: 0,
+        middle: 0,
+        end: 0
+    };
+
+
+}
+
+
 function findBoard(wall) {
 
     var materialList = wall['boardlist'];
@@ -183,6 +215,7 @@ function findBoard(wall) {
 
 function calculateBoard(wall) {
     var w = wall.getWall();
+    console.log('calculate board');
     // find out if we are on the last one. If so, skip it
     if (w.p1.x == w.p2.x && w.p1.y == w.p2.y && w.p1.x != 0) {
         // do something useful

@@ -21,7 +21,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-// BUG: Points exist outside GRID
 // BUG: Points, walls, and paths are sometimes not redrawn on resize?!?!
 // BUG: If screen size changes, it will still draw to those specific coordinates,
 // BUG: dynamic stuff added to form just goes past the form container.
@@ -29,6 +28,7 @@ SOFTWARE.*/
 // BUG: sometimes redraws the incorrect color when resizing
 // BUG: chunks don't work
 // BUG: board doesn't calculate correctly
+// BUG: Consider paper.js framework for rendering graphics to the to the canvas
 
 require('./misc/constants.js');
 require('./ui/drawCanvas.js');
@@ -143,6 +143,17 @@ function submitForm() {
 }
 
 
+// function to test if click was within grid #called in onclick handler below
+function invalidPoint(p) {
+    if (p.x < XMIN ||
+        p.y < YMIN ||
+        p.y > SCREEN_HEIGHT ||
+        p.x  > window.innerWidth - (document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth) - UNIT) {
+        return true;
+    }
+}
+
+
 // main entry point of the program
 function start() {
     var path = new Pathway();
@@ -157,6 +168,8 @@ function start() {
             x: Math.round(Math.round(event.clientX/XUNIT) * XUNIT),
             y: Math.round(Math.round(event.clientY/YUNIT) * YUNIT)
         };
+
+        if (invalidPoint(point)) return;
 
         if (!click) {
             wallHolder = [];
@@ -183,8 +196,6 @@ function start() {
                 click = 0;
             }
 
-
-            console.log(click);
         }
 
     }, false);
