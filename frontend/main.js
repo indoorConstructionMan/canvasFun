@@ -67,8 +67,6 @@ $(document).ready(function() {
             if(click) {
                 var temp = wall.getPoints()[0];
             }
-            console.log(pathStart);
-            console.log(wallHolder);
 
             for (p in pathways) {
                 drawPath(pathways[p].getWalls());
@@ -130,16 +128,30 @@ function reset() {
 
 // onclick handler for materials submit Form
 function submitForm() {
-    var inputWalls = document.querySelectorAll('INPUT');
     var setWalls = pathway.getWalls();
-
-    for (w in setWalls) {
-        setWalls[w].setHeight(inputWalls[0].value);
-        setWalls[w].setValue(inputWalls[1].value);
-        calculateBoard(setWalls[w]);
+    var inputWalls = document.querySelectorAll('INPUT');
+    
+    for (var i = 0; i < setWalls.length-1; i++) {
+        setWalls[i].setHeight(inputWalls[0].value);
+        setWalls[i].setValue(inputWalls[i+1].value);
     }
+
+    var data = {};
+    data.title = 'pathwayData';
+    data.message = setWalls;
+
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: 'http://localhost:3000/endpoint',
+        success: function(data) {
+            console.log('success from frontend');
+            console.log(JSON.stringify(data));
+        }
+    });
+
     removeForm();
-    createWalls(setWalls);
 }
 
 
