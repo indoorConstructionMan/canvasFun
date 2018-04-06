@@ -130,14 +130,13 @@ function reset() {
 function submitForm() {
     var setWalls = pathway.getWalls();
     var inputWalls = document.querySelectorAll('INPUT');
-    
+
     for (var i = 0; i < setWalls.length-1; i++) {
         setWalls[i].setHeight(inputWalls[0].value);
         setWalls[i].setValue(inputWalls[i+1].value);
     }
 
     var data = {};
-    data.title = 'pathwayData';
     data.message = setWalls;
 
     $.ajax({
@@ -146,12 +145,17 @@ function submitForm() {
         contentType: 'application/json',
         url: 'http://localhost:3000/endpoint',
         success: function(data) {
-            console.log('success from frontend');
-            console.log(JSON.stringify(data));
+            removeForm();;
+            var x = document.createElement('H');
+            var v  = parseInt(data[0].wall.height) * parseInt(data[0].wall.value);
+            var t = document.createTextNode(v.toString());
+            x.setAttribute('id', 'line-marker');
+            x.setAttribute('type', 'text');
+            x.appendChild(t);
+            document.getElementById('inputs').appendChild(x);
         }
     });
 
-    removeForm();
 }
 
 

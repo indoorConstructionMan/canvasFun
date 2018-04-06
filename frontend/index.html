@@ -7,13 +7,15 @@
         <link rel="stylesheet" type="text/css" href="./styles.css">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Chicle">
+        <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16" />
     </head>
     <body onresize="drawBackground()">
         <div class="flex-container">
             <canvas id="blueprint" width=5000 height=5000></canvas>
             <form class="w3-container" id="inputs" ></form>
             <div id="boardlist">
-                <button class="w3-button" onclick="reset()" type="button">Clear</button>
+                <button class="w3-button" id='button' onclick="reset()" type="button">Clear</button>
             </div>
         </div>
     </body>
