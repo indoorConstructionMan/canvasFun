@@ -1,3 +1,28 @@
+/*
+MIT License
+
+Copyright (c) 2018 Aaron
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*/
+
 const express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
@@ -29,18 +54,18 @@ app.get('/', (req, res, next) => {
 
 function lookUpTable(key) {
     return {
-        16: ['8','8'],
+        16: ['8','12', '12'],
         17: ['8', '9'],
         18: ['10','8'],
         19: ['10', '9'],
         20: ['8', '12'],
-        21: ['9','12'],
-        22: ['12','10'],
-        24: ['8','8','8'],
+        21: ['9', '12'],
+        22: ['12', '10'],
+        24: ['8', '8', '8'],
     }[key];
 }
 
-
+// (8, 13->) is crap
 function selectBoard(rows, length) {
     var x = new BoardingList();
 
@@ -56,6 +81,21 @@ function selectBoard(rows, length) {
             len -= 12;
             x.addOne('12');
             //console.log('added 12 f1');
+        }
+
+        if (len <= 4) {
+            if (rows == 2){
+                x.addOne('8');
+                len -= 8;
+                return x;
+            } else if (rows == 3) {
+                x.addOne('12');
+                len -= 12;
+                return x;
+            } else {
+                x.addOne('8');
+                return x;
+            }
         }
 
         // all numbers after this for loop should be 1-24 excluding 8, 9, 10, 12

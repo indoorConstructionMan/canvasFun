@@ -130,9 +130,11 @@ function submitForm() {
     var setWalls = pathway.getWalls();
     var inputWalls = document.querySelectorAll('INPUT');
 
+    var actualSqft = 0;
     for (var i = 0; i < setWalls.length-1; i++) {
         setWalls[i].setHeight(inputWalls[0].value);
         setWalls[i].setValue(inputWalls[i+1].value);
+        actualSqft += inputWalls[0].value * inputWalls[i+1].value;
     }
 
     var data = {};
@@ -145,7 +147,7 @@ function submitForm() {
         url: 'http://192.168.0.12:3000/calculate',
         success: function(data) {
             removeForm();
-            createWalls(data);
+            createWalls(data, actualSqft);
         }
     });
 

@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 // creates the list from the data.
-function createWalls(w) {
+function createWalls(w, sqft) {
     var ul = document.createElement('UL');
     ul.setAttribute('id', 'unordered');
     var nameContainer = document.createElement('H1');
@@ -53,8 +53,10 @@ function createWalls(w) {
             }
         }
     }
+
+    sqft
     var x = document.createElement('H');
-    var v  = "Total Square Footage: " + totalSqft;
+    var v  = "Total Square Footage: " + totalSqft + " Vs. Actual: " + sqft + " Loss => "  + Math.abs(totalSqft - sqft);
     var t = document.createTextNode(v);
     x.setAttribute('id', 'line-marker');
     x.setAttribute('type', 'text');
