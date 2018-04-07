@@ -34,7 +34,6 @@ require('./misc/constants.js');
 require('./ui/drawCanvas.js');
 require('./misc/log.js');
 require('./ui/materialsForm.js');
-require('./model/BoardingList.js');
 require('./model/Wall.js');
 require('./model/Pathway.js');
 require('./ui/materialsList.js');
@@ -143,16 +142,10 @@ function submitForm() {
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: 'http://localhost:3000/endpoint',
+        url: 'http://192.168.0.12:3000/calculate',
         success: function(data) {
-            removeForm();;
-            var x = document.createElement('H');
-            var v  = parseInt(data[0].wall.height) * parseInt(data[0].wall.value);
-            var t = document.createTextNode(v.toString());
-            x.setAttribute('id', 'line-marker');
-            x.setAttribute('type', 'text');
-            x.appendChild(t);
-            document.getElementById('inputs').appendChild(x);
+            removeForm();
+            createWalls(data);
         }
     });
 

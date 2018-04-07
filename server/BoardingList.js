@@ -24,14 +24,14 @@ SOFTWARE.*/
 function BoardingList() {
     this.board = {
         new : {
-            eights: {sqft: 32, length: 8, count: 0},
-            eightsAqua: {sqft: 32, length: 8, count: 0},
-            nines: {sqft: 36, length: 9, count: 0},
-            tens: {sqft: 40, length: 10, count: 0},
-            tensAqua: {sqft: 40, length: 10, count: 0},
-            twelves: {sqft: 48, length: 12, count: 0},
-            twelvesCd: {sqft: 48, length: 12, count: 0},
-            twelves54: {sqft: 54, length: 12, count: 0},
+            '8': {sqft: 32, length: 8, count: 0},
+            '8A': {sqft: 32, length: 8, count: 0},
+            '9': {sqft: 36, length: 9, count: 0},
+            '10': {sqft: 40, length: 10, count: 0},
+            '10A': {sqft: 40, length: 10, count: 0},
+            '12': {sqft: 48, length: 12, count: 0},
+            '12CD': {sqft: 48, length: 12, count: 0},
+            '1254': {sqft: 54, length: 12, count: 0},
         }, scrap: []
     }
 }
@@ -98,3 +98,5 @@ BoardingList.prototype.empty = function(value) {
     }
     this.board.scrap = [];
 };
+
+module.exports = BoardingList;
