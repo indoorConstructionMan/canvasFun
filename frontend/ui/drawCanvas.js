@@ -66,26 +66,26 @@ var drawPath = (path) => {
 
 
 // called in main logic, handles what to draw
-var drawWall = function(wall) {
+var drawWall = (wall) => {
     drawWallWithColor(wall, YELLOW);
 };
 
 
 // called in main logic, handles what to draw
-var drawPoint = function(p1) {
+var drawPoint = (p1) => {
     drawDot(p1, YELLOW, POINT_OUTER);
     drawDot(p1, DARK_BLACK, POINT_INNER-2);
 };
 
 
 // clears the entire canvas
-var clearScreen = function() {
+var clearScreen = () => {
     document.getElementById("blueprint").getContext("2d").clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 };
 
 
 // Redraws the grid
-var drawBackground = function() {
+var drawBackground = () => {
 
     var canvas = document.getElementById('blueprint'),
         context = canvas.getContext('2d');
@@ -108,7 +108,7 @@ var drawBackground = function() {
 
     // DRAW GRID LINES
     do {
-        drawLine({ x: xDelta, y: YUNIT - LINE_PADDING},
+         drawLine({ x: xDelta, y: YUNIT - LINE_PADDING},
                  { x: xDelta, y: Math.floor((SCREEN_HEIGHT - XUNIT - LINE_PADDING)/YUNIT)*YUNIT + YUNIT},
                  BLUEPRINTBLUE,
                  LINE_WIDTH

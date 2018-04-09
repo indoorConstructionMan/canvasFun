@@ -47,133 +47,68 @@ function require(locationInProject) {
 }
 
 
-
-// run this when dom has loaded.
-window.onload = function() {
-    console.log('Welcome to drywall calculator');
-    addApplicationTitle();
-    drawBackground();
-    start();
-}
-
-
 $(document).ready(function() {
-        $(window).resize(function() {
-            drawBackground();
-            // wall can't be accessed inside switch case?!?!
-            var temp = 0;
 
-            if(click) {
-                var temp = wall.getPoints()[0];
-            }
+    // Runs when the dom loads
+    $(window).on('load', function() {
+        console.log('Welcome to drywall calculator');
+        addApplicationTitle();
+        drawBackground();
+        start();
+    });
 
-            for (p in pathways) {
-                drawPath(pathways[p].getWalls());
-            }
 
-            for (w in wallHolder) {
-                if (w == wallHolder.length - 1) {
-                    wallHolder[w].setPoint2(wallHolder[0].getPoint1());
-                    wallHolder[w].setPoint1(pathStart);
-                    drawWall(wallHolder[w]);
-                    drawPoint(wallHolder[0].getPoint1());
-                    drawPoint(pathStart);
-                } else {
-                    drawWall(wallHolder[w]);
-                }
-            }
+    $(window).resize(function() {
+        drawBackground();
+        // wall can't be accessed inside switch case?!?!
+        var temp = 0;
 
-            switch(click){
-                case 1:
-                    drawPoint(wall.getPoint1());
-                    break;
-                case 2:
-                    if (pathways.length) {
-                        var x = new Wall();
-                        x.setPoint1(point1);
-                        x.setPoint2(temp);
-                        wall = x;
-                    } else {
-                        wall.setPoint2(wall.getPoint1());
-                        wall.setPoint1(point1);
-                    }
+        if(click) {
+            var temp = wall.getPoints()[0];
+        }
 
-                    drawWall(wall);
-                    drawPoint(point1);
-                    wall.update(wall.getPoint2());
-                    break;
-                default:
-                    break;
+        for (p in pathways) {
+            drawPath(pathways[p].getWalls());
+        }
+
+        for (w in wallHolder) {
+            if (w == wallHolder.length - 1) {
+                wallHolder[w].setPoint2(wallHolder[0].getPoint1());
+                wallHolder[w].setPoint1(pathStart);
+                drawWall(wallHolder[w]);
+                drawPoint(wallHolder[0].getPoint1());
+                drawPoint(pathStart);
+            } else {
+                drawWall(wallHolder[w]);
             }
         }
-    );
-});
 
+        switch(click){
+            case 1:
+                drawPoint(wall.getPoint1());
+                break;
+            case 2:
+                if (pathways.length) {
+                    var x = new Wall();
+                    x.setPoint1(point1);
+                    x.setPoint2(temp);
+                    wall = x;
+                } else {
+                    wall.setPoint2(wall.getPoint1());
+                    wall.setPoint1(point1);
+                }
 
-// onclick for clear button it resets screen on canvas
-function reset() {
-    removeForm();
-    addApplicationTitle();
-    drawBackground();
-    if (click == 2){
-        path = new Pathway();
-        wall = new Wall();
-        pathway = path;
-    }
-    click = 0;
-
-}
-
-
-// onclick handler for materials submit Form
-function submitForm() {
-    var setWalls = pathway.getWalls();
-    var inputWalls = document.querySelectorAll('INPUT');
-
-    var actualSqft = 0;
-    for (var i = 0; i < setWalls.length-1; i++) {
-        setWalls[i].setHeight(inputWalls[0].value);
-        setWalls[i].setValue(inputWalls[i+1].value);
-        actualSqft += inputWalls[0].value * inputWalls[i+1].value;
-    }
-
-    var data = {};
-    data.message = setWalls;
-
-    $.ajax({
-        type: 'POST',
-        data: JSON.stringify(data),
-        contentType: 'application/json',
-        url: 'http://127.0.0.1:3000/calculate',
-        success: function(data) {
-            removeForm();
-            createWalls(data, actualSqft);
+                drawWall(wall);
+                drawPoint(point1);
+                wall.update(wall.getPoint2());
+                break;
+            default:
+                break;
         }
     });
 
-}
 
-
-// function to test if click was within grid #called in onclick handler below
-function invalidPoint(p) {
-    if (p.x < XMIN ||
-        p.y < YMIN ||
-        p.y > SCREEN_HEIGHT ||
-        p.x  > window.innerWidth - (document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth) - UNIT) {
-        return true;
-    }
-}
-
-
-// main entry point of the program
-function start() {
-    var path = new Pathway();
-    wall = new Wall();
-    pathway = path;
-    click = 0;
-
-    // Grab canvas tag add a listen
-    document.getElementById('blueprint').addEventListener('click', function(event){
+    $('#blueprint').on('click', function(event) {
 
         var point = {
             x: Math.round(Math.round(event.clientX/XUNIT) * XUNIT),
@@ -206,10 +141,70 @@ function start() {
                 path = new Pathway();
                 click = 0;
             }
-
         }
+    });
 
-    }, false);
+});
+
+
+var submitForm = function() {
+    var setWalls = pathway.getWalls();
+    var inputWalls = document.querySelectorAll('INPUT');
+
+    var actualSqft = 0;
+    for (var i = 0; i < setWalls.length-1; i++) {
+        setWalls[i].setHeight(inputWalls[0].value);
+        setWalls[i].setValue(inputWalls[i+1].value);
+        actualSqft += inputWalls[0].value * inputWalls[i+1].value;
+    }
+
+    var data = {};
+    data.message = setWalls;
+
+    $.ajax({
+        type: 'POST',
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        url: 'http://127.0.0.1:3000/calculate',
+        success: function(data) {
+            removeForm();
+            createWalls(data, actualSqft);
+        }
+    });
+}
+
+
+// onclick for clear button it resets screen on canvas
+function reset() {
+    removeForm();
+    addApplicationTitle();
+    drawBackground();
+    if (click == 2){
+        path = new Pathway();
+        wall = new Wall();
+        pathway = path;
+    }
+    click = 0;
+}
+
+
+// function to test if click was within grid #called in onclick handler below
+function invalidPoint(p) {
+    if (p.x < XMIN ||
+        p.y < YMIN ||
+        p.y > SCREEN_HEIGHT ||
+        p.x  > window.innerWidth - (document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth) - UNIT) {
+        return true;
+    }
+}
+
+
+// main entry point of the program
+function start() {
+    var path = new Pathway();
+    wall = new Wall();
+    pathway = path;
+    click = 0;
 
     drawBackground();
 }

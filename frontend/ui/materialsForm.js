@@ -31,71 +31,67 @@ function removeForm() {
 
 // creates form title
 var createFormTitle = () => {
-    
-    var title = document.createElement('H');
-    var text = document.createTextNode("Please Input Measurements");
-    title.setAttribute('id', 'line-marker');
-    title.appendChild(text);
-    document.getElementById('inputs').appendChild(title);
+    var $formtitle = $("<h>", {id: "line-marker"});
+    $formtitle.text("Please Input Measurements");
+    $('#inputs').append($formtitle);
 };
 
 
 // Height input of form
-var createHeightInput = function() {
-    document.getElementById('inputs').appendChild(document.createElement('br'));
-    var h = document.createElement("INPUT");
-    h.setAttribute("id", "height-input");
-    h.setAttribute("type", "text");
-    h.setAttribute("placeholder", "Height");
-    document.getElementById('inputs').appendChild(h);
+var createHeightInput = () => {
+    var $inputColumn = $('#inputs');
+    $inputColumn.append($("<br>"));
+    var $heightInput = $("<input>", {
+        id: "height-input",
+        type: "text",
+        placeholder: "Height"
+    });
+
+    $inputColumn.append($heightInput);
 };
 
 
-
 // Create inputs for the wallsInPath
-var createWallInputs = function(count) {
+var createWallInputs = (count) => {
     for (var i = 0; i < count; i++) {
-        var x = document.createElement("INPUT");
-        x.style.backgroundColor = colors[i];
-        x.setAttribute("id", "measurementInputs");
-        x.setAttribute("type", "text");
-        document.getElementById('inputs').appendChild(x);
+        var $wallInput = $("<input>", {id: "measurementInputs", type: "text"});
+        $wallInput.css('background-color', colors[i]);
+        $('#inputs').append($wallInput);
     }
 }
 
+
 // form button to generate supplies
-var createFormButton = function() {
-    var formButton = document.createElement('BUTTON');
-    formButton.innerHTML = "Calculate materials";
-    formButton.setAttribute('id', 'formButton');
-    formButton.setAttribute('type', 'button');
-    formButton.setAttribute('class', 'w3-button');
-    formButton.setAttribute('onclick', 'submitForm()');
-    document.getElementById('inputs').appendChild(formButton);
-    document.getElementById('inputs').appendChild(document.createElement('br'));
+var createFormButton = () => {
+    var $formButton = $('<button>', {
+        id: 'formButton',
+        type: 'button',
+        class: 'w3-button',
+        onclick: 'submitForm()'
+    });
+
+    $formButton.html("Calculate Materials");
+    $('#inputs').append($formButton);
+    $('#inputs').append($('<br>'));
 };
 
 
 // inserts the application notification
-var addApplicationTitle = function() {
-    var form = document.getElementsByClassName('w3-container');
-    var title = document.createElement('H1');
-    var titleTextNode = document.createTextNode('Click blueprint to begin');
-    title.setAttribute('id', 'line-marker');
-    title.appendChild(titleTextNode);
-    form[0].appendChild(title);
+var addApplicationTitle = () => {
+    var $title = $("<h1>", {id: 'line-marker'});
+    $title.html('Click blueprint to begin');
+    $('#inputs').append($title);
 };
 
 
 // remove the application notification
-var removeApplicationTitle = function() {
-    var title = document.getElementById("line-marker");
-    title.parentNode.removeChild(title);
+var removeApplicationTitle = () => {
+    $('#line-marker').remove();
 };
 
 
 // Creates all the form and attaches to document
-var displayForm = function(count) {
+var displayForm = (count) => {
     createFormTitle();
     createHeightInput();
     createWallInputs(count);

@@ -23,17 +23,15 @@ SOFTWARE.*/
 
 // creates the list from the data.
 function createWalls(w, sqft) {
-    var ul = document.createElement('UL');
-    ul.setAttribute('id', 'unordered');
-    var nameContainer = document.createElement('H1');
-    nameContainer.setAttribute('id', 'line-marker');
-    var name = document.createTextNode('Materials List: ');
-    nameContainer.appendChild(name);
-    document.getElementById('inputs').appendChild(nameContainer);
-    document.getElementById('inputs').appendChild(ul);
+
+    var $inputs = $("#inputs");
+    var $ul = $("<ul>", {id: "unordered"});
+    var $nameContainer = $("<h1>", {id: "line-marker"});
+    $nameContainer.html("Materials List: ");
+    $inputs.append($nameContainer);
+    $inputs.append($ul);
 
     var totalSqft = 0;
-
     var boardNames = ['','','','','','','','', "4' x 8'", "4' x 9'", "4' x 10'", '', "4' x 12'"];
     var i = 0;
     for (ele in w) {
@@ -44,9 +42,11 @@ function createWalls(w, sqft) {
                     for (j in newBoard[item]['new']) {
                         if (newBoard[item]['new'][j].count != 0) {
                             totalSqft += newBoard[item]['new'][j].sqft * newBoard[item]['new'][j].count;
-                            var n = document.createElement('LI');
-                            n.innerHTML = boardNames[newBoard[item]['new'][j].length] + " : " + newBoard[item]['new'][j].count + " board(s).";
-                            document.getElementById('unordered').appendChild(n);
+                            var $listItem = $("<li>");
+                            var listString = boardNames[newBoard[item]['new'][j].length] + " : " + newBoard[item]['new'][j].count + " board(s).";
+                            $listItem.html(listString);
+                            $ul.append($listItem);
+
                         }
                     }
                 }
@@ -54,12 +54,8 @@ function createWalls(w, sqft) {
         }
     }
 
-    sqft
-    var x = document.createElement('H');
-    var v  = "Total Square Footage: " + totalSqft + " Vs. Actual: " + sqft + " Loss => "  + Math.abs(totalSqft - sqft);
-    var t = document.createTextNode(v);
-    x.setAttribute('id', 'line-marker');
-    x.setAttribute('type', 'text');
-    x.appendChild(t);
-    document.getElementById('inputs').appendChild(x);
+    var sqftString = "Total Square Footage: " + totalSqft + " Vs. Actual: " + sqft + " Loss => "  + Math.abs(totalSqft - sqft);
+    var $sqftTag = $("<h>", {id: 'line-marker', type: 'text'});
+    $sqftTag.html(sqftString);
+    $inputs.append($sqftTag);
 }
