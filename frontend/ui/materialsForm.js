@@ -25,15 +25,13 @@ SOFTWARE.
 
 // removes form when screen gets cleared.
 function removeForm() {
-    var form = document.getElementById('inputs');
-    while(form.firstChild) {
-        form.removeChild(form.firstChild);
-    }
+    $('#inputs').children().remove();
 }
 
 
 // creates form title
 var createFormTitle = () => {
+    
     var title = document.createElement('H');
     var text = document.createTextNode("Please Input Measurements");
     title.setAttribute('id', 'line-marker');

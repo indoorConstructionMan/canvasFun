@@ -144,7 +144,7 @@ function submitForm() {
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: 'http://192.168.0.12:3000/calculate',
+        url: 'http://127.0.0.1:3000/calculate',
         success: function(data) {
             removeForm();
             createWalls(data, actualSqft);

@@ -35,7 +35,8 @@ const PADDING = 10;
 // Colors
 //const BLUEPRINTBLUE = "#262228";
 const BLUEPRINTBLUE = "#0375B4";
-
+const DARK_BLACK = "#262228";
+const YELLOW = "#FECE00";
 const BLACK = "#000000";
 const WHITE = "#FFFFFF";
 const RED = "#E73C18";

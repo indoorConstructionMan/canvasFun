@@ -65,13 +65,13 @@ function lookUpTable(key) {
     }[key];
 }
 
-// (8, 13->) is crap
+// need to cache scrap and reuse.
 function selectBoard(rows, length) {
     var x = new BoardingList();
 
-    availableBoard = [8, 9, 10, 12];
-    halfBoard = [4, 5, 6];
-    comboBoard = [16, 17, 18, 19, 20, 21, 22, 24];
+    var availableBoard = [8, 9, 10, 12];
+    var halfBoard = [4, 5, 6];
+    var comboBoard = [16, 17, 18, 19, 20, 21, 22, 24];
 
     // add board a section at a time
     for (var j = 0; j < rows; j++) {
@@ -187,4 +187,4 @@ app.post('/calculate', function(req, res, next) {
 
 
 var port = 3000;
-app.listen(port, () => console.log('Example app listening on port ' + port));
+app.listen(port, process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1');
