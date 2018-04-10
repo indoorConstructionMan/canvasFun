@@ -160,12 +160,13 @@ var submitForm = function() {
 
     var data = {};
     data.message = setWalls;
+    var urlCalc = 'http://' + IPADDRESS + ':' + PORT + '/calculate';
 
     $.ajax({
         type: 'POST',
         data: JSON.stringify(data),
         contentType: 'application/json',
-        url: 'http://127.0.0.1:3000/calculate',
+        url: urlCalc,
         success: function(data) {
             removeForm();
             createWalls(data, actualSqft);

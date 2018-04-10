@@ -22,6 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 */
+// setup port and ip for Server
+// ipconfig -> ipv4 lan address
+var PORT = 3000;
+var IPADDRESS = '192.168.0.12';
 
 const express = require('express');
 var path = require('path');
@@ -165,7 +169,6 @@ function selectBoard(rows, length) {
 }
 
 app.post('/calculate', function(req, res, next) {
-    console.log('body: ' + JSON.stringify(req.body));
     // Handle request and build something to display on frontend
     // remove dead wall.
     var ret = {};
@@ -185,6 +188,4 @@ app.post('/calculate', function(req, res, next) {
     res.send(ret);
 });
 
-
-var port = 3000;
-app.listen(port, process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1');
+app.listen(PORT, process.env.OPENSHIFT_NODEJS_IP || process.env.IP || IPADDRESS);
