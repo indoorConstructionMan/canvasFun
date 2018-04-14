@@ -24,7 +24,7 @@ SOFTWARE.
 */
 // setup port and ip for Server
 // ipconfig -> ipv4 lan address
-var PORT = 3000;
+var PORT = 3001;
 var IPADDRESS = '192.168.0.12';
 
 const express = require('express');
@@ -58,14 +58,17 @@ app.get('/', (req, res, next) => {
 
 function lookUpTable(key) {
     return {
+        13: ['8', '8', '10'],
+        14: ['10', '10', '8'],
+        15: ['10', '10', '10'],
         16: ['8','12', '12'],
-        17: ['8', '9'],
-        18: ['10','8'],
-        19: ['10', '9'],
-        20: ['8', '12'],
-        21: ['9', '12'],
-        22: ['12', '10'],
-        24: ['8', '8', '8'],
+        17: ['12', '12', '10'],
+        18: ['12', '12', '12'],
+        19: ['8', '12', '8', '12'],
+        20: ['8', '12', '12', '8'],
+        21: ['9', '12', '9', '12'],
+        22: ['12', '10', '12', '10'],
+        24: ['8', '8', '8', '12', '12'],
     }[key];
 }
 
@@ -114,6 +117,7 @@ function selectBoard(rows, length) {
 
         // all numbers after for include 1-24 not including numbers on availableBoard and halfBoard
         for (var i = 0; i < comboBoard.length; i++) {
+
             if (comboBoard[i] == len) {
                 var list = lookUpTable(comboBoard[i]);
                 //console.log('adding comboBoard');
@@ -121,6 +125,7 @@ function selectBoard(rows, length) {
                     x.addOne(list[ele]);
                     len -= parseInt(list[ele]);
                 }
+                break;
             }
         }
 
@@ -184,6 +189,7 @@ app.post('/calculate', function(req, res, next) {
             var length = ret[wall]['wall']['value'];
             ret[wall]['wall']['boardList'] = selectBoard(rows, length);
         }
+
     }
     res.send(ret);
 });

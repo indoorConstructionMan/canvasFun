@@ -117,6 +117,7 @@ $(document).ready(function() {
 
         if (invalidPoint(point)) return;
 
+                console.log(point);
         if (!click) {
             wallHolder = [];
             click = 1;
@@ -194,7 +195,7 @@ function invalidPoint(p) {
     if (p.x < XMIN ||
         p.y < YMIN ||
         p.y > SCREEN_HEIGHT ||
-        p.x  > window.innerWidth - (document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth) - UNIT) {
+        p.x  > window.innerWidth) {
         return true;
     }
 }

@@ -100,11 +100,9 @@ var drawBackground = () => {
     SCREEN_WIDTH = Math.round(window.innerWidth);
 
     context.canvas.height = SCREEN_HEIGHT;
-    context.canvas.width = Math.round(SCREEN_WIDTH*CANVAS_RATIO);
+    context.canvas.width = SCREEN_WIDTH;
 
     clearScreen();
-    var offset = document.getElementById('inputs').offsetWidth + document.getElementById('boardlist').offsetWidth
-    offset += UNIT;
 
     // DRAW GRID LINES
     do {
@@ -114,7 +112,7 @@ var drawBackground = () => {
                  LINE_WIDTH
         );
         xDelta += XUNIT;
-    } while (xDelta < SCREEN_WIDTH - offset);
+    } while (xDelta < SCREEN_WIDTH - LINE_PADDING);
 
 
     //horizontal lines

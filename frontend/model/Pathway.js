@@ -50,10 +50,18 @@ Pathway.prototype.checkAndBuildPathForm = function() {
 // needs to handle clicking in same spot,
 Pathway.prototype.checkComplete = function() {
     var current = this.path.walls[this.path.walls.length-1];
+    var firstOne = this.path.walls[0];
 
+    // if last point 2 is equal to first point 1 then we have a closed path
+    if (this.path.walls.length > 1 && current.getPoint2().x == firstOne.getPoint1().x && current.getPoint2().y == firstOne.getPoint1().y )  {
+        this.setClosed(true);
+    }
+
+    // checks to make sure two points are the same before it stops
     if (this.path.walls.length > 1 && current.getPoint1().x == current.getPoint2().x && current.getPoint1().y == current.getPoint2().y) {
         return true;
     }
+
     return false;
 };
 
